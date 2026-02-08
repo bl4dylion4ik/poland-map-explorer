@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useCallback, useRef } from 'react';
-import { InteractiveMap } from '@/components/map/InteractiveMap';
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import { DeckGLMap } from '@/components/map/DeckGLMap';
 import { MapLegend } from '@/components/map/MapLegend';
 import { MapBreadcrumbs } from '@/components/map/MapBreadcrumbs';
 import { KPICards } from '@/components/analytics/KPICards';
@@ -10,11 +10,14 @@ import { RankingTable } from '@/components/analytics/RankingTable';
 import { GlobalFilters } from '@/components/analytics/GlobalFilters';
 import { AnalyticsTabs } from '@/components/analytics/AnalyticsTabs';
 import { FilterProvider } from '@/contexts/FilterContext';
-import { fetchVoivodeships, fetchCounties } from '@/services/geoService';
-import { GeoFeature, GeoJSONCollection, MetricType, MapViewLevel, BreadcrumbItem } from '@/types/map';
+import { fetchVoivodeships, fetchCounties, generatePolandMask } from '@/services/geoService';
+import { CITIES } from '@/data/mockData';
+import { GeoFeature, GeoJSONCollection, MetricType, MapViewLevel, BreadcrumbItem, City } from '@/types/map';
 import { Loader2, Map as MapIcon, Layers, DollarSign, TrendingUp, BarChart3, LayoutDashboard } from 'lucide-react';
-import { METRICS } from '@/constants/map';
+import { METRICS, MAP_CENTER_POLAND, POLAND_BOUNDS } from '@/constants/map';
 import { useTranslation } from 'react-i18next';
+import bbox from '@turf/bbox';
+import { WebMercatorViewport, FlyToInterpolator } from '@deck.gl/core';
 
 type ViewTab = 'dashboard' | 'map';
 
@@ -26,15 +29,35 @@ const Index: React.FC = () => {
 
   const [allVoivodeships, setAllVoivodeships] = useState<GeoJSONCollection | null>(null);
   const [allCounties, setAllCounties] = useState<GeoJSONCollection | null>(null);
-  const [currentViewGeo, setCurrentViewGeo] = useState<GeoJSONCollection | null>(null);
   const [breadcrumbs, setBreadcrumbs] = useState<BreadcrumbItem[]>([
     { id: null, name: 'Poland', level: 'country' },
   ]);
+  const [selectedFeature, setSelectedFeature] = useState<GeoFeature | null>(null);
+  const [polandMask, setPolandMask] = useState<GeoJSONCollection | null>(null);
 
-  const [mapDimensions, setMapDimensions] = useState({ width: 600, height: 420 });
-  const [fullMapDimensions, setFullMapDimensions] = useState({ width: 800, height: 600 });
-  const dashMapRef = useRef<HTMLDivElement>(null);
-  const fullMapRef = useRef<HTMLDivElement>(null);
+  // Map View State
+  const [viewState, setViewState] = useState({
+    longitude: MAP_CENTER_POLAND[0],
+    latitude: MAP_CENTER_POLAND[1],
+    zoom: 5.5,
+    pitch: 0,
+    bearing: 0,
+    transitionDuration: 0,
+    transitionInterpolator: null as any
+  });
+
+  // Sync state with zoom level
+  const handleViewStateChange = useCallback((newViewState: any) => {
+    setViewState(newViewState);
+
+    // Zooming out automatically resets context
+    if (newViewState.zoom < 7.0 && breadcrumbs.length > 1) {
+        setBreadcrumbs([{ id: null, name: 'Poland', level: 'country' }]);
+        setSelectedFeature(null);
+    } else if (newViewState.zoom < 10.0 && breadcrumbs.length > 2) {
+        setBreadcrumbs(prev => prev.slice(0, 2));
+    }
+  }, [breadcrumbs]);
 
   useEffect(() => {
     const initData = async () => {
@@ -42,7 +65,7 @@ const Index: React.FC = () => {
         const [voivodeships, counties] = await Promise.all([fetchVoivodeships(), fetchCounties()]);
         setAllVoivodeships(voivodeships);
         setAllCounties(counties);
-        setCurrentViewGeo(voivodeships);
+        setPolandMask(generatePolandMask(voivodeships));
       } catch (err) {
         console.error('Failed to load map data', err);
       } finally {
@@ -52,60 +75,67 @@ const Index: React.FC = () => {
     initData();
   }, []);
 
-  useEffect(() => {
-    const observers: ResizeObserver[] = [];
+  const zoomToFeature = useCallback((feature: GeoFeature) => {
+    const featureBbox = bbox(feature);
+    const viewport = new WebMercatorViewport({ width: 800, height: 600 });
+    const { longitude, latitude, zoom } = viewport.fitBounds(
+      [[featureBbox[0], featureBbox[1]], [featureBbox[2], featureBbox[3]]],
+      { padding: 40 }
+    );
 
-    if (dashMapRef.current) {
-      const obs = new ResizeObserver((entries) => {
-        for (const entry of entries) {
-          setMapDimensions({
-            width: Math.floor(entry.contentRect.width),
-            height: Math.floor(entry.contentRect.height),
-          });
-        }
-      });
-      obs.observe(dashMapRef.current);
-      observers.push(obs);
-    }
-
-    if (fullMapRef.current) {
-      const obs = new ResizeObserver((entries) => {
-        for (const entry of entries) {
-          setFullMapDimensions({
-            width: Math.floor(entry.contentRect.width),
-            height: Math.floor(entry.contentRect.height),
-          });
-        }
-      });
-      obs.observe(fullMapRef.current);
-      observers.push(obs);
-    }
-
-    return () => observers.forEach(o => o.disconnect());
-  }, [activeTab, loading]);
+    setViewState({
+      longitude,
+      latitude,
+      zoom,
+      pitch: 0,
+      bearing: 0,
+      transitionDuration: 1000,
+      transitionInterpolator: new FlyToInterpolator()
+    });
+  }, []);
 
   const handleRegionClick = useCallback((feature: GeoFeature) => {
-    const currentLevel = breadcrumbs[breadcrumbs.length - 1].level;
     const regionName = feature.properties.nazwa;
     const regionId = feature.properties.id || feature.properties.kod;
 
-    if (currentLevel === 'country') {
-      if (!allCounties) return;
-      let relevantFeatures = allCounties.features;
-      if (feature.properties.kod) {
-        const prefix = feature.properties.kod.toString().substring(0, 2);
-        const filtered = allCounties.features.filter(
-          (f) => f.properties.kod && f.properties.kod.toString().startsWith(prefix)
-        );
-        if (filtered.length > 0) relevantFeatures = filtered;
-      }
-      setCurrentViewGeo({ type: 'FeatureCollection', features: relevantFeatures });
-      setBreadcrumbs((prev) => [...prev, { id: regionId, name: regionName, level: 'voivodeship' }]);
-    } else if (currentLevel === 'voivodeship') {
-      setBreadcrumbs((prev) => [...prev, { id: regionId, name: regionName, level: 'city' }]);
-      setCurrentViewGeo({ type: 'FeatureCollection', features: [feature] });
+    zoomToFeature(feature);
+    setSelectedFeature(feature);
+    
+    if (breadcrumbs[breadcrumbs.length - 1].id !== regionId) {
+        setBreadcrumbs((prev) => {
+            const base = prev[0];
+            return [base, { id: regionId, name: regionName, level: 'voivodeship' }];
+        });
     }
-  }, [breadcrumbs, allCounties]);
+  }, [zoomToFeature, breadcrumbs]);
+
+  const handleCityClick = useCallback((city: City) => {
+    setViewState({
+      longitude: city.lng,
+      latitude: city.lat,
+      zoom: 12,
+      pitch: 0,
+      bearing: 0,
+      transitionDuration: 2000,
+      transitionInterpolator: new FlyToInterpolator()
+    });
+    
+    setBreadcrumbs((prev) => {
+        const voivodeship = allVoivodeships?.features.find(f => f.properties.nazwa === city.voivodeship);
+        const base = prev[0];
+        const crumbs: BreadcrumbItem[] = [base];
+        
+        if (voivodeship) {
+            crumbs.push({ 
+                id: voivodeship.properties.id || voivodeship.properties.kod, 
+                name: city.voivodeship, 
+                level: 'voivodeship' 
+            });
+        }
+        crumbs.push({ id: city.id, name: city.name, level: 'city' });
+        return crumbs;
+    });
+  }, [allVoivodeships]);
 
   const handleNavigate = useCallback((index: number) => {
     const targetItem = breadcrumbs[index];
@@ -113,50 +143,67 @@ const Index: React.FC = () => {
     setBreadcrumbs(newBreadcrumbs);
 
     if (targetItem.level === 'country') {
-      setCurrentViewGeo(allVoivodeships);
-    } else if (targetItem.level === 'voivodeship' && allCounties) {
-      const voivodeshipId = newBreadcrumbs[1]?.id;
-      let relevantFeatures = allCounties.features;
-      if (voivodeshipId) {
-        const prefix = voivodeshipId.toString().substring(0, 2);
-        const filtered = allCounties.features.filter(
-          (f) => f.properties.kod && f.properties.kod.toString().startsWith(prefix)
+      setSelectedFeature(null);
+      setViewState({
+        longitude: MAP_CENTER_POLAND[0],
+        latitude: MAP_CENTER_POLAND[1],
+        zoom: 5.5,
+        pitch: 0,
+        bearing: 0,
+        transitionDuration: 1000,
+        transitionInterpolator: new FlyToInterpolator()
+      });
+    } else if (targetItem.level === 'voivodeship') {
+        const feature = allVoivodeships?.features.find(f => 
+            (f.properties.id || f.properties.kod) === targetItem.id
         );
-        if (filtered.length > 0) relevantFeatures = filtered;
-      }
-      setCurrentViewGeo({ type: 'FeatureCollection', features: relevantFeatures });
+        if (feature) {
+            zoomToFeature(feature);
+            setSelectedFeature(feature);
+        }
     }
-  }, [breadcrumbs, allVoivodeships, allCounties]);
+  }, [breadcrumbs, allVoivodeships, zoomToFeature]);
 
-  const getCurrentLevel = (): MapViewLevel => {
-    return breadcrumbs[breadcrumbs.length - 1].level;
-  };
+  const mapLevel = useMemo(() => {
+      if (viewState.zoom < 7.5) return 'country';
+      if (viewState.zoom < 10.5) return 'voivodeship';
+      return 'city';
+  }, [viewState.zoom]);
+
+  const activeGeoData = useMemo(() => {
+      if (viewState.zoom < 7.5) return allVoivodeships;
+      return allCounties;
+  }, [viewState.zoom, allVoivodeships, allCounties]);
 
   const OverviewContent = (
     <>
       <KPICards />
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        <div className="xl:col-span-2 bg-card border border-border rounded-xl overflow-hidden relative" style={{ height: 420 }}>
+        <div className="xl:col-span-2 h-[850px] relative rounded-xl overflow-hidden border border-border bg-slate-50">
           <div className="absolute top-3 left-3 z-10">
             <MapBreadcrumbs items={breadcrumbs} onNavigate={handleNavigate} />
           </div>
-          <div className="w-full h-full" ref={dashMapRef}>
-            <InteractiveMap
-              geoData={currentViewGeo}
-              subGeoData={allCounties}
-              currentLevel={getCurrentLevel()}
-              selectedRegionId={breadcrumbs[breadcrumbs.length - 1].id}
-              metric={metric}
-              onRegionClick={handleRegionClick}
-              width={mapDimensions.width || 600}
-              height={mapDimensions.height || 420}
-            />
-          </div>
+          <DeckGLMap
+            geoData={activeGeoData}
+            baseGeo={allVoivodeships}
+            maskGeo={polandMask}
+            metric={metric}
+            cities={CITIES}
+            viewState={viewState}
+            onViewStateChange={handleViewStateChange}
+            onRegionClick={handleRegionClick}
+            onCityClick={handleCityClick}
+            currentLevel={mapLevel as MapViewLevel}
+            bounds={POLAND_BOUNDS}
+            selectedRegionFeature={selectedFeature}
+          />
           <div className="absolute bottom-3 right-3 z-10">
             <MapLegend metric={metric} />
           </div>
         </div>
-        <RankingTable />
+        <div className="h-[850px] overflow-hidden">
+             <RankingTable />
+        </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
         <PriceTrendChart />
@@ -261,19 +308,27 @@ const Index: React.FC = () => {
             </div>
           ) : activeTab === 'map' ? (
             /* Full Map View */
-            <div className="relative h-full" ref={fullMapRef}>
-              <MapBreadcrumbs items={breadcrumbs} onNavigate={handleNavigate} />
-              <InteractiveMap
-                geoData={currentViewGeo}
-                subGeoData={allCounties}
-                currentLevel={getCurrentLevel()}
-                selectedRegionId={breadcrumbs[breadcrumbs.length - 1].id}
+            <div className="relative h-full bg-slate-50">
+              <div className="absolute top-3 left-3 z-10">
+                <MapBreadcrumbs items={breadcrumbs} onNavigate={handleNavigate} />
+              </div>
+              <DeckGLMap
+                geoData={activeGeoData}
+                baseGeo={allVoivodeships}
+                maskGeo={polandMask}
                 metric={metric}
+                cities={CITIES}
+                viewState={viewState}
+                onViewStateChange={handleViewStateChange}
                 onRegionClick={handleRegionClick}
-                width={fullMapDimensions.width}
-                height={fullMapDimensions.height}
+                onCityClick={handleCityClick}
+                currentLevel={mapLevel as MapViewLevel}
+                bounds={POLAND_BOUNDS}
+                selectedRegionFeature={selectedFeature}
               />
-              <MapLegend metric={metric} />
+              <div className="absolute bottom-3 right-3 z-10">
+                <MapLegend metric={metric} />
+              </div>
             </div>
           ) : (
             /* Dashboard View */

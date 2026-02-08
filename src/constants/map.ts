@@ -1,5 +1,8 @@
 export const MAP_CENTER_POLAND: [number, number] = [19.1451, 51.9194];
+export const POLAND_BOUNDS: [number, number, number, number] = [14.11, 49.00, 24.15, 54.84];
 export const DEFAULT_SCALE = 2800;
+
+export const MAPBOX_TOKEN = 'pk.eyJ1IjoiYWVyMTIzIiwiYSI6ImNtbGU3aWJrbjFhenMzZnF1NW51Mzh5ZXEifQ.6WP4HwtTVekxfa6x0PY5vQ';
 
 export const GEOJSON_URLS = {
   voivodeships: 'https://raw.githubusercontent.com/ppatrzyk/polska-geojson/master/wojewodztwa/wojewodztwa-min.geojson',
@@ -8,20 +11,20 @@ export const GEOJSON_URLS = {
 
 export const COLORS = {
   supply: {
-    low: '#dbeafe',
+    low: '#bfdbfe',
     high: '#1e40af',
   },
   price: {
-    low: '#dcfce7',
-    high: '#166534',
+    low: '#bbf7d0',
+    high: '#15803d',
   },
   growth: {
-    low: '#fef2f2',
+    low: '#fecaca',
     high: '#991b1b',
   },
   borders: '#64748b',
-  bordersHover: '#cbd5e1',
-  background: '#0f172a',
+  bordersHover: '#94a3b8',
+  background: '#f8fafc',
 };
 
 export const METRICS = [
