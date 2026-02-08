@@ -1,0 +1,103 @@
+{
+  "header": {
+    "badge": "Plany cenowe",
+    "title": "Wybór planu",
+    "subtitle": "Wybierz poziom analiz odpowiadający powadze Twoich inwestycji",
+    "note": "Wszystkie plany obejmują codzienne aktualizacje danych i dostęp do platformy MarketNav"
+  },
+  "plans": {
+    "basic": {
+      "name": "Basic",
+      "price": "49",
+      "currency": "zł",
+      "period": "miesiąc",
+      "description": "Śledzenie rynku i monitorowanie możliwości",
+      "features": {
+        "0": "1 aktywny alert",
+        "1": "Podstawowa analityka rynku",
+        "2": "Przegląd rynku według regionów",
+        "3": "Cena za m² (średnia i mediana)",
+        "4": "Podstawowe wykresy i trendy",
+        "5": "Eksploracja na mapie (ograniczona głębokość)"
+      },
+      "bestFor": "Osoby potrzebujące ogólnej orientacji bez głębokiej analizy"
+    },
+    "pro": {
+      "name": "Pro",
+      "price": "89",
+      "currency": "zł",
+      "period": "miesiąc",
+      "badge": "Najpopularniejszy",
+      "description": "Podejmowanie decyzji opartych na danych",
+      "includesFrom": "Basic",
+      "features": {
+        "0": "Do 7 aktywnych alertów",
+        "1": "Ocena cen i ranking rynkowy",
+        "2": "Pełny dostęp do danych historycznych",
+        "3": "Zaawansowane wykresy i analiza szeregów czasowych",
+        "4": "Rozkłady cen i porównania trendów",
+        "5": "Analityka na poziomie miasta i dzielnicy"
+      },
+      "bestFor": "Nabywcy, analitycy i profesjonaliści potrzebujący kontekstu i historii, nie tylko bieżących cen"
+    },
+    "investor": {
+      "name": "Investor / Pro+",
+      "price": "149",
+      "currency": "zł",
+      "period": "miesiąc",
+      "description": "Dla inwestorów i profesjonalistów alokujących kapitał",
+      "includesFrom": "Pro",
+      "features": {
+        "0": "Do 30 aktywnych alertów",
+        "1": "Metryki ROI i wyniki inwestycyjne",
+        "2": "Analiza rentowności najmu",
+        "3": "Porównania dzielnica do dzielnicy",
+        "4": "Wskaźniki zmienności i ryzyka",
+        "5": "Eksport CSV",
+        "6": "Dostęp API dla integracji i własnych modeli"
+      },
+      "bestFor": "Inwestorzy traktujący nieruchomości jako klasę aktywów, nie jednorazowy zakup"
+    }
+  },
+  "comparison": {
+    "title": "Porównanie planów",
+    "subtitle": "Szczegółowe porównanie funkcji we wszystkich poziomach",
+    "features": {
+      "feature": "Funkcja",
+      "price": "Cena miesięczna",
+      "alerts": "Aktywne alerty",
+      "overview": "Przegląd rynku",
+      "historical": "Dane historyczne",
+      "advanced": "Zaawansowane wykresy",
+      "scoring": "Ocena cen",
+      "roi": "Metryki ROI",
+      "yield": "Rentowność najmu",
+      "district": "Porównania dzielnic",
+      "csv": "Eksport CSV",
+      "api": "Dostęp API"
+    }
+  },
+  "footer": {
+    "noNoise": {
+      "title": "Bez szumu. Bez reklam. Bez promowanych ofert.",
+      "description": "MarketNav działa w modelu subskrypcyjnym, więc nasze cele są zgodne z Twoimi:",
+      "value": "lepsze dane → lepsze decyzje"
+    },
+    "cta": {
+      "title": "Gotowy na eksplorację rynku?",
+      "description": "Zacznij od planu",
+      "plan": "Basic",
+      "suffix": "i uaktualnij w dowolnym momencie wraz ze wzrostem potrzeb analitycznych",
+      "button": "Rozpocznij z planem Basic"
+    },
+    "info": {
+      "monthly": "Wszystkie plany to subskrypcje miesięczne",
+      "cancel": "Anuluj lub zmień plan w dowolnym momencie"
+    }
+  },
+  "common": {
+    "everythingFrom": "Wszystko z planu",
+    "plus": "plus:",
+    "bestFor": "Najlepszy dla:"
+  }
+}

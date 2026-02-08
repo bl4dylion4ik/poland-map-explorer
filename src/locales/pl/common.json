@@ -1,0 +1,22 @@
+{
+  "brand": {
+    "name": "MarketNav",
+    "tagline": "Analityka Polski"
+  },
+  "nav": {
+    "home": "Strona główna",
+    "pricing": "Cennik",
+    "dashboard": "Dashboard"
+  },
+  "theme": {
+    "switchToDark": "Przełącz na tryb ciemny",
+    "switchToLight": "Przełącz na tryb jasny"
+  },
+  "cta": {
+    "getStarted": "Rozpocznij",
+    "learnMore": "Dowiedz się więcej",
+    "explore": "Przegląd rynku",
+    "viewMap": "Mapa interaktywna",
+    "chooseplan": "Wybór: {{plan}}"
+  }
+}

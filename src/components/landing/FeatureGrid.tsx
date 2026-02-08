@@ -1,74 +1,47 @@
 import React from 'react';
 import { BarChart3, Map, TrendingUp, AlertTriangle, Bell, PieChart } from 'lucide-react';
 import { FeatureCard } from './FeatureCard';
+import { useTranslation } from 'react-i18next';
 
 export const FeatureGrid: React.FC = () => {
+  const { t } = useTranslation('landing');
+
   const features = [
     {
       icon: BarChart3,
-      title: 'Market Analytics',
-      description: 'Daily-updated metrics across all market levels',
-      details: [
-        'Prices per m² (average, median, percentiles)',
-        'Supply and absorption dynamics',
-        'New vs removed listings tracking',
-        'Market growth and cooling signals',
-      ],
+      titleKey: 'features.list.analytics.title',
+      descriptionKey: 'features.list.analytics.description',
+      featureKeys: [0, 1, 2, 3].map(i => `features.list.analytics.features.${i}`),
     },
     {
       icon: Map,
-      title: 'Map-First Exploration',
-      description: 'Interactive geographic analysis tool',
-      details: [
-        'Official administrative boundaries',
-        'Choropleth and density layers',
-        'Drill-down from country to district',
-        'Cross-filtering between map and charts',
-      ],
+      titleKey: 'features.list.map.title',
+      descriptionKey: 'features.list.map.description',
+      featureKeys: [0, 1, 2, 3].map(i => `features.list.map.features.${i}`),
     },
     {
       icon: TrendingUp,
-      title: 'Historical Intelligence',
-      description: 'Track market evolution over time',
-      details: [
-        'Multi-year price and supply trends',
-        'Structural vs short-term changes',
-        'Market regime detection',
-        'Distribution shifts, not just averages',
-      ],
+      titleKey: 'features.list.historical.title',
+      descriptionKey: 'features.list.historical.description',
+      featureKeys: [0, 1, 2, 3].map(i => `features.list.historical.features.${i}`),
     },
     {
       icon: AlertTriangle,
-      title: 'Risk Insights',
-      description: 'Identify market risks and anomalies',
-      details: [
-        'Seller concentration analysis',
-        'Pattern-based risk indicators',
-        'Volatility and dispersion metrics',
-        'Explainable, aggregated signals',
-      ],
+      titleKey: 'features.list.risk.title',
+      descriptionKey: 'features.list.risk.description',
+      featureKeys: [0, 1, 2, 3].map(i => `features.list.risk.features.${i}`),
     },
     {
       icon: Bell,
-      title: 'Smart Alerts',
-      description: 'Get notified when markets shift',
-      details: [
-        'New listings matching criteria',
-        'Price drops and abnormal changes',
-        'Emerging hotspots detection',
-        'Market condition shifts',
-      ],
+      titleKey: 'features.list.alerts.title',
+      descriptionKey: 'features.list.alerts.description',
+      featureKeys: [0, 1, 2, 3].map(i => `features.list.alerts.features.${i}`),
     },
     {
       icon: PieChart,
-      title: 'Distribution Analysis',
-      description: 'Understand market dispersion',
-      details: [
-        'Price distribution histograms',
-        'Percentile band tracking',
-        'Property type segmentation',
-        'Market concentration metrics',
-      ],
+      titleKey: 'features.list.distribution.title',
+      descriptionKey: 'features.list.distribution.description',
+      featureKeys: [0, 1, 2, 3].map(i => `features.list.distribution.features.${i}`),
     },
   ];
 
@@ -79,28 +52,34 @@ export const FeatureGrid: React.FC = () => {
         <div className="mb-16 text-center">
           <div className="mb-4 inline-flex items-center gap-2 text-primary">
             <BarChart3 size={24} />
-            <span className="text-sm font-semibold uppercase tracking-wider">Core Capabilities</span>
+            <span className="text-sm font-semibold uppercase tracking-wider">{t('features.badge')}</span>
           </div>
           <h2 className="mb-4 text-3xl font-bold tracking-tight text-foreground sm:text-4xl">
-            What MarketNav Does
+            {t('features.title')}
           </h2>
           <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
-            Comprehensive analytics across country, voivodeship, city, and district levels
+            {t('features.subtitle')}
           </p>
         </div>
 
         {/* Features Grid */}
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {features.map((feature, index) => (
-            <FeatureCard key={index} {...feature} />
+            <FeatureCard
+              key={index}
+              icon={feature.icon}
+              title={t(feature.titleKey)}
+              description={t(feature.descriptionKey)}
+              details={feature.featureKeys.map(key => t(key))}
+            />
           ))}
         </div>
 
         {/* Bottom Note */}
         <div className="mt-12 text-center">
           <p className="text-sm text-muted-foreground italic">
-            The map is not decoration — it is an{' '}
-            <span className="font-semibold text-primary">analytical instrument</span>
+            {t('features.note')}{' '}
+            <span className="font-semibold text-primary">{t('features.noteBold')}</span>
           </p>
         </div>
       </div>

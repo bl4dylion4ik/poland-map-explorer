@@ -50,6 +50,52 @@
     --sidebar-border: 217 33% 14%;
     --sidebar-ring: 234 89% 74%;
   }
+
+  .light {
+    --background: 0 0% 100%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 98%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    --primary: 234 89% 64%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 217 33% 94%;
+    --secondary-foreground: 222 47% 11%;
+
+    --muted: 217 33% 94%;
+    --muted-foreground: 215 20% 40%;
+
+    --accent: 234 89% 64%;
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 217 33% 90%;
+    --input: 217 33% 90%;
+    --ring: 234 89% 64%;
+
+    /* Map-specific tokens */
+    --map-bg: 0 0% 98%;
+    --map-border: 215 25% 80%;
+    --map-region-hover: 222 47% 11%;
+    --map-tooltip-bg: 0 0% 100%;
+    --map-tooltip-border: 215 25% 85%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 215 20% 40%;
+    --sidebar-primary: 234 89% 64%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 234 60% 95%;
+    --sidebar-accent-foreground: 234 89% 64%;
+    --sidebar-border: 217 33% 90%;
+    --sidebar-ring: 234 89% 64%;
+  }
 }
 
 @layer base {

@@ -1,0 +1,210 @@
+{
+  "hero": {
+    "badge": "Analiza rynku nieruchomości",
+    "headline": "Poznaj polski rynek nieruchomości",
+    "headlineHighlight": "zanim na niego wejdziesz",
+    "subheadline": "MarketNav przekształca surowe ogłoszenia w użyteczne analizy rynkowe. Zobacz nie tylko",
+    "subheadlineWhere": "gdzie są ceny",
+    "subheadlineBut": "ale",
+    "subheadlineGoing": "dokąd zmierzają",
+    "description": "To nie jest portal ogłoszeniowy. To",
+    "descriptionBold": "system analityczny",
+    "descriptionFor": "dla inwestorów, deweloperów i świadomych nabywców, którzy muszą rozumieć zmienność, ryzyko i szanse rynkowe.",
+    "stats": {
+      "voivodeships": "Województwa",
+      "counties": "Powiaty",
+      "updates": "Codziennie",
+      "updatesLabel": "Aktualizacje",
+      "tracking": "Dane historyczne",
+      "trackingLabel": "Śledzenie"
+    }
+  },
+  "problem": {
+    "badge": "Problem",
+    "title": "Dlaczego powstał MarketNav",
+    "subtitle": "Dane o polskim rynku nieruchomości mają fundamentalne ograniczenia",
+    "issues": {
+      "0": "Rozproszone na wielu portalach",
+      "1": "Trudne do analizy historycznej",
+      "2": "Ukierunkowane na pojedyncze ogłoszenia, nie rynki",
+      "3": "Nieprzejrzyste w zakresie ryzyka, zmienności i presji podażowej"
+    },
+    "quote": {
+      "typical": "Typowe portale odpowiadają:",
+      "typicalQuestion": "\"Co jest teraz na sprzedaż?\"",
+      "marketnav": "MarketNav odpowiada:",
+      "marketnavAnswer": "\"Co się zmienia, gdzie i dlaczego — i co to oznacza.\""
+    }
+  },
+  "features": {
+    "badge": "Kluczowe funkcje",
+    "title": "Co oferuje MarketNav",
+    "subtitle": "Kompleksowa analityka na poziomie kraju, województwa, miasta i dzielnicy",
+    "note": "Mapa nie jest dekoracją — to",
+    "noteBold": "narzędzie analityczne",
+    "list": {
+      "analytics": {
+        "title": "Analityka rynku",
+        "description": "Metryki aktualizowane codziennie na wszystkich poziomach rynku",
+        "features": {
+          "0": "Ceny za m² (średnia, mediana, percentyle)",
+          "1": "Dynamika podaży i absorpcji",
+          "2": "Śledzenie nowych i usuniętych ofert",
+          "3": "Sygnały wzrostu i ochłodzenia rynku"
+        }
+      },
+      "map": {
+        "title": "Eksploracja przez mapę",
+        "description": "Interaktywne narzędzie analizy geograficznej",
+        "features": {
+          "0": "Oficjalne granice administracyjne",
+          "1": "Warstwy choropletowe i gęstości",
+          "2": "Przejście od kraju do dzielnicy",
+          "3": "Filtrowanie między mapą a wykresami"
+        }
+      },
+      "historical": {
+        "title": "Dane historyczne",
+        "description": "Śledzenie ewolucji rynku w czasie",
+        "features": {
+          "0": "Wieloletnie trendy cen i podaży",
+          "1": "Zmiany strukturalne vs krótkoterminowe",
+          "2": "Wykrywanie reżimów rynkowych",
+          "3": "Zmiany rozkładu, nie tylko średnich"
+        }
+      },
+      "risk": {
+        "title": "Analiza ryzyka",
+        "description": "Identyfikacja ryzyk i anomalii rynkowych",
+        "features": {
+          "0": "Analiza koncentracji sprzedawców",
+          "1": "Wskaźniki ryzyka oparte na wzorcach",
+          "2": "Metryki zmienności i rozproszenia",
+          "3": "Wyjaśnialne, zagregowane sygnały"
+        }
+      },
+      "alerts": {
+        "title": "Inteligentne alerty",
+        "description": "Powiadomienia o zmianach rynkowych",
+        "features": {
+          "0": "Nowe oferty spełniające kryteria",
+          "1": "Spadki cen i nietypowe zmiany",
+          "2": "Wykrywanie wschodzących lokalizacji",
+          "3": "Zmiany warunków rynkowych"
+        }
+      },
+      "distribution": {
+        "title": "Analiza rozkładów",
+        "description": "Zrozumienie rozproszenia rynku",
+        "features": {
+          "0": "Histogramy rozkładu cen",
+          "1": "Śledzenie pasm percentylowych",
+          "2": "Segmentacja według typu nieruchomości",
+          "3": "Metryki koncentracji rynku"
+        }
+      }
+    }
+  },
+  "comparison": {
+    "badge": "Różnice",
+    "title": "Co wyróżnia MarketNav",
+    "subtitle": "Stworzony do poważnych decyzji, nie przypadkowego przeglądania",
+    "table": {
+      "headers": {
+        "feature": "",
+        "typical": "Typowe portale",
+        "marketnav": "MarketNav"
+      },
+      "rows": {
+        "focus": {
+          "label": "Fokus",
+          "typical": "Ogłoszenia",
+          "marketnav": "Rynek"
+        },
+        "time": {
+          "label": "Horyzont czasowy",
+          "typical": "Stan obecny",
+          "marketnav": "Dane historyczne + czasowe"
+        },
+        "metrics": {
+          "label": "Metryki",
+          "typical": "Tylko średnie",
+          "marketnav": "Rozkłady i zmienność"
+        },
+        "analysis": {
+          "label": "Analiza",
+          "typical": "Statyczne dashboardy",
+          "marketnav": "Analityka eksploracyjna"
+        },
+        "risk": {
+          "label": "Kontekst ryzyka",
+          "typical": "Brak analizy ryzyka",
+          "marketnav": "Sygnały świadome ryzyka"
+        },
+        "business": {
+          "label": "Model biznesowy",
+          "typical": "Reklamy i promowane oferty",
+          "marketnav": "Subskrypcja"
+        }
+      }
+    },
+    "note": "MarketNav przypomina bardziej",
+    "noteBold": "terminal rynków finansowych",
+    "noteEnd": "niż portal nieruchomości"
+  },
+  "audience": {
+    "badge": "Dla kogo",
+    "title": "Dla poważnych decyzji",
+    "subtitle": "Analityka klasy inwestorskiej dla tych, którzy muszą rozumieć rynki, nie tylko oferty",
+    "segments": {
+      "investors": {
+        "title": "Inwestorzy",
+        "useCases": {
+          "0": "Identyfikacja niedowartościowanych rynków",
+          "1": "Śledzenie rentowności i zmienności",
+          "2": "Wczesne wykrywanie przegrzania",
+          "3": "Alokacja kapitału oparta na danych"
+        }
+      },
+      "developers": {
+        "title": "Deweloperzy i profesjonaliści",
+        "useCases": {
+          "0": "Zrozumienie popytu i siły cenowej",
+          "1": "Monitorowanie podaży konkurencji",
+          "2": "Analiza dynamiki submikrorynków",
+          "3": "Wsparcie decyzji o wykonalności i cenach"
+        }
+      },
+      "buyers": {
+        "title": "Świadomi nabywcy",
+        "useCases": {
+          "0": "Unikanie przepłacania",
+          "1": "Zrozumienie struktury lokalnego rynku",
+          "2": "Analiza przeszłych, nie tylko obecnych cen",
+          "3": "Redukcja ryzyka spadkowego"
+        }
+      }
+    },
+    "values": {
+      "transparent": "Przejrzysta metodologia.",
+      "noBlackbox": "Brak czarnych skrzynek.",
+      "noAds": "Bez reklam i promowanych ofert.",
+      "subscription": "Model subskrypcyjny zgodny z Twoim sukcesem"
+    }
+  },
+  "cta": {
+    "title": "Poznaj rynek",
+    "titleHighlight": "zanim na niego wejdziesz",
+    "subtitle": "Zobacz nie tylko",
+    "subtitleWhere": "gdzie są ceny",
+    "subtitleBut": "ale",
+    "subtitleGoing": "dokąd zmierzają",
+    "button": "Rozpocznij eksplorację rynku",
+    "links": {
+      "map": "Pokaż mapę",
+      "overview": "Przegląd rynku",
+      "alerts": "Tworzenie alertów"
+    },
+    "tagline": "MarketNav — dane o nieruchomościach przekształcone w wiedzę."
+  }
+}

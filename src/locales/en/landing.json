@@ -1,0 +1,210 @@
+{
+  "hero": {
+    "badge": "Real-Estate Market Intelligence",
+    "headline": "Understand the Polish Real-Estate Market",
+    "headlineHighlight": "Before You Enter It",
+    "subheadline": "MarketNav turns raw listings into actionable market insights. See not just",
+    "subheadlineWhere": "where prices are",
+    "subheadlineBut": "but",
+    "subheadlineGoing": "where they're going",
+    "description": "This is not a listings portal. It's a",
+    "descriptionBold": "market intelligence system",
+    "descriptionFor": "for investors, developers, and data-driven buyers who need to understand volatility, risk, and opportunity.",
+    "stats": {
+      "voivodeships": "Voivodeships",
+      "counties": "Counties",
+      "updates": "Daily",
+      "updatesLabel": "Updates",
+      "tracking": "Historical",
+      "trackingLabel": "Tracking"
+    }
+  },
+  "problem": {
+    "badge": "The Problem",
+    "title": "Why MarketNav Exists",
+    "subtitle": "Polish real-estate data has fundamental limitations",
+    "issues": {
+      "0": "Fragmented across multiple portals",
+      "1": "Difficult to analyze historically",
+      "2": "Biased toward individual listings, not markets",
+      "3": "Opaque when it comes to risk, volatility, and supply pressure"
+    },
+    "quote": {
+      "typical": "Most platforms answer:",
+      "typicalQuestion": "\"What is for sale right now?\"",
+      "marketnav": "MarketNav answers:",
+      "marketnavAnswer": "\"What is changing, where, and why — and what it means.\""
+    }
+  },
+  "features": {
+    "badge": "Core Capabilities",
+    "title": "What MarketNav Does",
+    "subtitle": "Comprehensive analytics across country, voivodeship, city, and district levels",
+    "note": "The map is not decoration — it is an",
+    "noteBold": "analytical instrument",
+    "list": {
+      "analytics": {
+        "title": "Market Analytics",
+        "description": "Daily-updated metrics across all market levels",
+        "features": {
+          "0": "Prices per m² (average, median, percentiles)",
+          "1": "Supply and absorption dynamics",
+          "2": "New vs removed listings tracking",
+          "3": "Market growth and cooling signals"
+        }
+      },
+      "map": {
+        "title": "Map-First Exploration",
+        "description": "Interactive geographic analysis tool",
+        "features": {
+          "0": "Official administrative boundaries",
+          "1": "Choropleth and density layers",
+          "2": "Drill-down from country to district",
+          "3": "Cross-filtering between map and charts"
+        }
+      },
+      "historical": {
+        "title": "Historical Intelligence",
+        "description": "Track market evolution over time",
+        "features": {
+          "0": "Multi-year price and supply trends",
+          "1": "Structural vs short-term changes",
+          "2": "Market regime detection",
+          "3": "Distribution shifts, not just averages"
+        }
+      },
+      "risk": {
+        "title": "Risk Insights",
+        "description": "Identify market risks and anomalies",
+        "features": {
+          "0": "Seller concentration analysis",
+          "1": "Pattern-based risk indicators",
+          "2": "Volatility and dispersion metrics",
+          "3": "Explainable, aggregated signals"
+        }
+      },
+      "alerts": {
+        "title": "Smart Alerts",
+        "description": "Get notified when markets shift",
+        "features": {
+          "0": "New listings matching criteria",
+          "1": "Price drops and abnormal changes",
+          "2": "Emerging hotspots detection",
+          "3": "Market condition shifts"
+        }
+      },
+      "distribution": {
+        "title": "Distribution Analysis",
+        "description": "Understand market dispersion",
+        "features": {
+          "0": "Price distribution histograms",
+          "1": "Percentile band tracking",
+          "2": "Property type segmentation",
+          "3": "Market concentration metrics"
+        }
+      }
+    }
+  },
+  "comparison": {
+    "badge": "Differentiation",
+    "title": "What Makes MarketNav Different",
+    "subtitle": "Built for serious decisions, not casual browsing",
+    "table": {
+      "headers": {
+        "feature": "",
+        "typical": "Typical Portals",
+        "marketnav": "MarketNav"
+      },
+      "rows": {
+        "focus": {
+          "label": "Focus",
+          "typical": "Listings-first",
+          "marketnav": "Market-first"
+        },
+        "time": {
+          "label": "Time Horizon",
+          "typical": "Point-in-time",
+          "marketnav": "Historical + temporal"
+        },
+        "metrics": {
+          "label": "Metrics",
+          "typical": "Averages only",
+          "marketnav": "Distributions & volatility"
+        },
+        "analysis": {
+          "label": "Analysis",
+          "typical": "Static dashboards",
+          "marketnav": "Exploratory analytics"
+        },
+        "risk": {
+          "label": "Risk Context",
+          "typical": "No risk insights",
+          "marketnav": "Risk-aware signals"
+        },
+        "business": {
+          "label": "Business Model",
+          "typical": "Ads & promoted listings",
+          "marketnav": "Subscription-based"
+        }
+      }
+    },
+    "note": "MarketNav feels closer to a",
+    "noteBold": "financial market terminal",
+    "noteEnd": "than a real-estate website"
+  },
+  "audience": {
+    "badge": "Who It's For",
+    "title": "Built for Serious Decisions",
+    "subtitle": "Investor-grade analytics for those who need to understand markets, not just listings",
+    "segments": {
+      "investors": {
+        "title": "Investors",
+        "useCases": {
+          "0": "Identify undervalued markets",
+          "1": "Track yield proxies and volatility",
+          "2": "Detect overheating early",
+          "3": "Allocate capital with data, not intuition"
+        }
+      },
+      "developers": {
+        "title": "Developers & Professionals",
+        "useCases": {
+          "0": "Understand demand and pricing power",
+          "1": "Monitor competitor supply",
+          "2": "Analyze sub-market dynamics",
+          "3": "Support feasibility and pricing decisions"
+        }
+      },
+      "buyers": {
+        "title": "Data-Driven Buyers",
+        "useCases": {
+          "0": "Avoid overpaying",
+          "1": "Understand local market structure",
+          "2": "See past, not just current prices",
+          "3": "Reduce downside risk"
+        }
+      }
+    },
+    "values": {
+      "transparent": "Transparent methodology.",
+      "noBlackbox": "No black-box scores.",
+      "noAds": "No ads, no promoted listings.",
+      "subscription": "Subscription-based and aligned with your success"
+    }
+  },
+  "cta": {
+    "title": "Understand the Market",
+    "titleHighlight": "Before You Enter It",
+    "subtitle": "See not just",
+    "subtitleWhere": "where prices are",
+    "subtitleBut": "but",
+    "subtitleGoing": "where they are going",
+    "button": "Start Exploring the Market",
+    "links": {
+      "map": "View the Map",
+      "overview": "Explore Market Overview",
+      "alerts": "Create Alerts"
+    },
+    "tagline": "MarketNav — Real-estate data, turned into insight."
+  }
+}

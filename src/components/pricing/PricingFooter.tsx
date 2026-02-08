@@ -2,8 +2,11 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Shield } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export const PricingFooter: React.FC = () => {
+  const { t } = useTranslation('pricing');
+
   return (
     <div className="mx-auto max-w-4xl text-center">
       {/* No Noise Section */}
@@ -12,13 +15,13 @@ export const PricingFooter: React.FC = () => {
           <Shield size={24} />
         </div>
         <h3 className="mb-4 text-2xl font-bold text-foreground sm:text-3xl">
-          No Noise. No Ads. No Promoted Listings.
+          {t('footer.noNoise.title')}
         </h3>
         <p className="mb-2 text-lg text-muted-foreground">
-          MarketNav is subscription-based so our incentives are aligned with yours:
+          {t('footer.noNoise.description')}
         </p>
         <p className="text-xl font-semibold text-primary">
-          better data → better decisions
+          {t('footer.noNoise.value')}
         </p>
       </div>
 
@@ -26,10 +29,10 @@ export const PricingFooter: React.FC = () => {
       <div className="space-y-6">
         <div>
           <h3 className="mb-3 text-xl font-bold text-foreground">
-            Ready to explore the market?
+            {t('footer.cta.title')}
           </h3>
           <p className="text-base text-muted-foreground">
-            Start with <span className="font-semibold text-foreground">Basic</span> and upgrade anytime as your analysis needs grow
+            {t('footer.cta.description')} <span className="font-semibold text-foreground">{t('footer.cta.plan')}</span> {t('footer.cta.suffix')}
           </p>
         </div>
 
@@ -37,7 +40,7 @@ export const PricingFooter: React.FC = () => {
         <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
           <Link to="/analytics">
             <Button size="lg" className="gap-2 px-8 shadow-lg hover:shadow-primary/20">
-              Get Started with Basic
+              {t('footer.cta.button')}
               <ArrowRight size={18} />
             </Button>
           </Link>
@@ -45,8 +48,8 @@ export const PricingFooter: React.FC = () => {
 
         {/* Additional Info */}
         <div className="mt-8 space-y-2 text-sm text-muted-foreground">
-          <p>All plans are monthly subscriptions</p>
-          <p>Cancel or upgrade anytime</p>
+          <p>{t('footer.info.monthly')}</p>
+          <p>{t('footer.info.cancel')}</p>
         </div>
       </div>
     </div>

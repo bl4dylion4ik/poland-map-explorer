@@ -1,0 +1,22 @@
+{
+  "brand": {
+    "name": "MarketNav",
+    "tagline": "Poland Analytics"
+  },
+  "nav": {
+    "home": "Home",
+    "pricing": "Pricing",
+    "dashboard": "Dashboard"
+  },
+  "theme": {
+    "switchToDark": "Switch to dark mode",
+    "switchToLight": "Switch to light mode"
+  },
+  "cta": {
+    "getStarted": "Get Started",
+    "learnMore": "Learn More",
+    "explore": "Explore Market Overview",
+    "viewMap": "View Interactive Map",
+    "chooseplan": "Choose {{plan}}"
+  }
+}

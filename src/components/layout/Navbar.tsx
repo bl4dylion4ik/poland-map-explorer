@@ -2,9 +2,14 @@ import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Map as MapIcon, BarChart3, Home, CreditCard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import { ThemeToggle } from '@/components/theme/ThemeToggle';
+import { LanguageToggle } from '@/components/language/LanguageToggle';
+import { useTranslation } from 'react-i18next';
 
 export const Navbar: React.FC = () => {
   const location = useLocation();
+  const { t } = useTranslation('common');
   
   const isActive = (path: string) => location.pathname === path;
   
@@ -15,15 +20,16 @@ export const Navbar: React.FC = () => {
         <Link to="/" className="flex items-center gap-2 hover:opacity-80 transition-opacity">
           <MapIcon size={28} className="text-primary" />
           <div>
-            <h1 className="text-xl font-bold tracking-tight text-foreground">MarketNav</h1>
+            <h1 className="text-xl font-bold tracking-tight text-foreground">{t('brand.name')}</h1>
             <p className="text-[10px] text-muted-foreground uppercase tracking-wider font-semibold leading-none">
-              Poland Analytics
+              {t('brand.tagline')}
             </p>
           </div>
         </Link>
         
-        {/* Navigation Links */}
+        {/* Navigation Links & Controls */}
         <div className="flex items-center gap-2">
+          {/* Navigation Links */}
           <Link to="/">
             <Button
               variant={isActive('/') ? 'secondary' : 'ghost'}
@@ -31,7 +37,7 @@ export const Navbar: React.FC = () => {
               className={`gap-2 ${isActive('/') ? 'border border-primary/20' : ''}`}
             >
               <Home size={16} />
-              <span className="hidden sm:inline">Home</span>
+              <span className="hidden sm:inline">{t('nav.home')}</span>
             </Button>
           </Link>
           <Link to="/pricing">
@@ -41,7 +47,7 @@ export const Navbar: React.FC = () => {
               className={`gap-2 ${isActive('/pricing') ? 'border border-primary/20' : ''}`}
             >
               <CreditCard size={16} />
-              <span className="hidden sm:inline">Pricing</span>
+              <span className="hidden sm:inline">{t('nav.pricing')}</span>
             </Button>
           </Link>
           <Link to="/analytics">
@@ -51,9 +57,18 @@ export const Navbar: React.FC = () => {
               className={`gap-2 ${isActive('/analytics') ? 'border border-primary/20' : ''}`}
             >
               <BarChart3 size={16} />
-              <span className="hidden sm:inline">Dashboard</span>
+              <span className="hidden sm:inline">{t('nav.dashboard')}</span>
             </Button>
           </Link>
+          
+          {/* Separator */}
+          <Separator orientation="vertical" className="h-6 mx-2" />
+          
+          {/* Theme Toggle */}
+          <ThemeToggle />
+          
+          {/* Language Toggle */}
+          <LanguageToggle />
         </div>
       </div>
     </nav>

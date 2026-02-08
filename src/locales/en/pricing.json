@@ -1,0 +1,103 @@
+{
+  "header": {
+    "badge": "Pricing Plans",
+    "title": "Choose Your Plan",
+    "subtitle": "Choose the level of market insight that matches how seriously you invest",
+    "note": "All plans include daily data updates and access to the MarketNav platform"
+  },
+  "plans": {
+    "basic": {
+      "name": "Basic",
+      "price": "49",
+      "currency": "zł",
+      "period": "month",
+      "description": "For tracking the market and monitoring opportunities",
+      "features": {
+        "0": "1 active alert",
+        "1": "Core market analytics",
+        "2": "Market overview by region",
+        "3": "Price per m² (average & median)",
+        "4": "Basic charts and trends",
+        "5": "Map-based exploration (limited depth)"
+      },
+      "bestFor": "Individuals who want situational awareness without deep analysis"
+    },
+    "pro": {
+      "name": "Pro",
+      "price": "89",
+      "currency": "zł",
+      "period": "month",
+      "badge": "Most Popular",
+      "description": "For data-driven decision making",
+      "includesFrom": "Basic",
+      "features": {
+        "0": "Up to 7 active alerts",
+        "1": "Price scoring & market ranking",
+        "2": "Full historical data access",
+        "3": "Advanced charts and time-series analysis",
+        "4": "Price distributions & trend comparisons",
+        "5": "City and district-level analytics"
+      },
+      "bestFor": "Buyers, analysts, and professionals who want context and history, not just current prices"
+    },
+    "investor": {
+      "name": "Investor / Pro+",
+      "price": "149",
+      "currency": "zł",
+      "period": "month",
+      "description": "For investors and professionals allocating capital",
+      "includesFrom": "Pro",
+      "features": {
+        "0": "Up to 30 active alerts",
+        "1": "ROI and investment performance metrics",
+        "2": "Rental yield analysis",
+        "3": "District-to-district comparisons",
+        "4": "Volatility & risk indicators",
+        "5": "CSV exports",
+        "6": "API access for integrations and custom models"
+      },
+      "bestFor": "Investors who treat real estate as an asset class, not a one-off purchase"
+    }
+  },
+  "comparison": {
+    "title": "Compare Plans",
+    "subtitle": "Detailed feature comparison across all tiers",
+    "features": {
+      "feature": "Feature",
+      "price": "Monthly Price",
+      "alerts": "Active Alerts",
+      "overview": "Market Overview",
+      "historical": "Historical Data",
+      "advanced": "Advanced Charts",
+      "scoring": "Price Scoring",
+      "roi": "ROI Metrics",
+      "yield": "Rental Yield",
+      "district": "District Comparison",
+      "csv": "CSV Export",
+      "api": "API Access"
+    }
+  },
+  "footer": {
+    "noNoise": {
+      "title": "No Noise. No Ads. No Promoted Listings.",
+      "description": "MarketNav is subscription-based so our incentives are aligned with yours:",
+      "value": "better data → better decisions"
+    },
+    "cta": {
+      "title": "Ready to explore the market?",
+      "description": "Start with",
+      "plan": "Basic",
+      "suffix": "and upgrade anytime as your analysis needs grow",
+      "button": "Get Started with Basic"
+    },
+    "info": {
+      "monthly": "All plans are monthly subscriptions",
+      "cancel": "Cancel or upgrade anytime"
+    }
+  },
+  "common": {
+    "everythingFrom": "Everything in",
+    "plus": "plus:",
+    "bestFor": "Best for:"
+  }
+}
