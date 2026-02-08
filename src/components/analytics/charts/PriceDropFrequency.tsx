@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Rectangle } from 'recharts';
 import { getPriceDropFrequency } from '@/data/mockData';
 import { useTranslation } from 'react-i18next';
 
@@ -34,6 +34,7 @@ export const PriceDropFrequency: React.FC<PriceDropFrequencyProps> = ({ days }) 
             unit="%"
           />
           <Tooltip
+            cursor={{ fill: 'transparent' }}
             contentStyle={{
               backgroundColor: 'hsl(var(--card))',
               border: '1px solid hsl(var(--border))',
@@ -41,7 +42,23 @@ export const PriceDropFrequency: React.FC<PriceDropFrequencyProps> = ({ days }) 
               fontSize: '12px',
             }}
           />
-          <Bar dataKey="value" fill="#f59e0b" radius={[4, 4, 0, 0]} />
+          <Bar 
+            dataKey="value" 
+            fill="#f59e0b" 
+            radius={[4, 4, 0, 0]}
+            activeBar={(props: any) => (
+              <Rectangle 
+                {...props} 
+                fill="#fbbf24"
+                stroke="#f59e0b"
+                strokeWidth={1}
+                width={props.width + 4}
+                x={props.x - 2}
+                height={props.height + 4}
+                y={props.y - 4}
+              />
+            )}
+          />
         </BarChart>
       </ResponsiveContainer>
     </div>

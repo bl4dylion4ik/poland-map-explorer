@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, Rectangle } from 'recharts';
 import { getPriceChangeDistribution } from '@/data/mockData';
 import { useTranslation } from 'react-i18next';
 
@@ -29,6 +29,7 @@ export const PriceChangeDist: React.FC = () => {
             tickLine={false}
           />
           <Tooltip
+            cursor={{ fill: 'transparent' }}
             contentStyle={{
               backgroundColor: 'hsl(var(--card))',
               border: '1px solid hsl(var(--border))',
@@ -36,7 +37,20 @@ export const PriceChangeDist: React.FC = () => {
               fontSize: '12px',
             }}
           />
-          <Bar dataKey="count" radius={[4, 4, 0, 0]}>
+          <Bar 
+            dataKey="count" 
+            radius={[4, 4, 0, 0]}
+            activeBar={(props: any) => (
+              <Rectangle 
+                {...props} 
+                fillOpacity={0.8}
+                width={props.width + 4}
+                x={props.x - 2}
+                height={props.height + 4}
+                y={props.y - 4}
+              />
+            )}
+          >
             {data.map((entry, index) => (
               <Cell 
                 key={`cell-${index}`} 

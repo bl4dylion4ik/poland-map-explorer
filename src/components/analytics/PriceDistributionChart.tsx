@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Rectangle } from 'recharts';
 import { getPriceDistribution } from '@/data/mockData';
 import { useTranslation } from 'react-i18next';
 
@@ -16,6 +16,7 @@ export const PriceDistributionChart: React.FC = () => {
           <XAxis dataKey="range" tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
           <YAxis tick={{ fontSize: 11, fill: '#94a3b8' }} axisLine={false} tickLine={false} />
           <Tooltip
+            cursor={{ fill: 'transparent' }}
             contentStyle={{
               backgroundColor: 'hsl(217, 33%, 12%)',
               border: '1px solid hsl(217, 33%, 20%)',
@@ -24,7 +25,24 @@ export const PriceDistributionChart: React.FC = () => {
               color: '#e2e8f0',
             }}
           />
-          <Bar dataKey="count" fill="hsl(234, 89%, 74%)" radius={[4, 4, 0, 0]} />
+          <Bar 
+            dataKey="count" 
+            fill="hsl(234, 89%, 74%)" 
+            radius={[4, 4, 0, 0]}
+            activeBar={(props: any) => (
+              <Rectangle 
+                {...props} 
+                fill="hsl(234, 89%, 80%)"
+                stroke="hsl(234, 89%, 74%)"
+                strokeWidth={1}
+                // Slightly expand the bar
+                width={props.width + 4}
+                x={props.x - 2}
+                height={props.height + 4}
+                y={props.y - 4}
+              />
+            )}
+          />
         </BarChart>
       </ResponsiveContainer>
     </div>

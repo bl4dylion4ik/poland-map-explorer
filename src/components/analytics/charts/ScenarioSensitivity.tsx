@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceLine } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, ReferenceLine, Rectangle } from 'recharts';
 import { getScenarioSensitivity } from '@/data/mockData';
 import { useTranslation } from 'react-i18next';
 
@@ -26,7 +26,7 @@ export const ScenarioSensitivity: React.FC = () => {
             tickLine={false}
           />
           <Tooltip
-            cursor={{ fill: 'hsl(var(--secondary))', opacity: 0.2 }}
+            cursor={{ fill: 'transparent' }}
             contentStyle={{
               backgroundColor: 'hsl(var(--card))',
               border: '1px solid hsl(var(--border))',
@@ -36,8 +36,38 @@ export const ScenarioSensitivity: React.FC = () => {
           />
           <Legend />
           <ReferenceLine x={0} stroke="hsl(var(--foreground))" />
-          <Bar dataKey="price" name={t('charts.priceImpact')} fill="#3b82f6" radius={[0, 4, 4, 0]} barSize={10} />
-          <Bar dataKey="supply" name={t('charts.supplyImpact')} fill="#10b981" radius={[0, 4, 4, 0]} barSize={10} />
+          <Bar 
+            dataKey="price" 
+            name={t('charts.priceImpact')} 
+            fill="#3b82f6" 
+            radius={[0, 4, 4, 0]} 
+            barSize={10}
+            activeBar={(props: any) => (
+              <Rectangle 
+                {...props} 
+                fill="#60a5fa"
+                height={props.height + 4}
+                y={props.y - 2}
+                width={props.width + (props.width > 0 ? 4 : -4)}
+              />
+            )}
+          />
+          <Bar 
+            dataKey="supply" 
+            name={t('charts.supplyImpact')} 
+            fill="#10b981" 
+            radius={[0, 4, 4, 0]} 
+            barSize={10}
+            activeBar={(props: any) => (
+              <Rectangle 
+                {...props} 
+                fill="#34d399"
+                height={props.height + 4}
+                y={props.y - 2}
+                width={props.width + (props.width > 0 ? 4 : -4)}
+              />
+            )}
+          />
         </BarChart>
       </ResponsiveContainer>
     </div>

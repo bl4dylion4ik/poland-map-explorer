@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Rectangle } from 'recharts';
 import { getSupplyConcentration } from '@/data/mockData';
 import { useTranslation } from 'react-i18next';
 
@@ -26,6 +26,7 @@ export const SupplyConcentration: React.FC = () => {
             tickLine={false}
           />
           <Tooltip
+            cursor={{ fill: 'transparent' }}
             contentStyle={{
               backgroundColor: 'hsl(var(--card))',
               border: '1px solid hsl(var(--border))',
@@ -33,7 +34,22 @@ export const SupplyConcentration: React.FC = () => {
               fontSize: '12px',
             }}
           />
-          <Bar dataKey="concentration" fill="hsl(var(--accent))" radius={[0, 4, 4, 0]} barSize={20} />
+          <Bar 
+            dataKey="concentration" 
+            fill="hsl(var(--accent))" 
+            radius={[0, 4, 4, 0]} 
+            barSize={20}
+            activeBar={(props: any) => (
+              <Rectangle 
+                {...props} 
+                fill="hsl(var(--accent))"
+                fillOpacity={0.8}
+                height={props.height + 4}
+                y={props.y - 2}
+                width={props.width + 4}
+              />
+            )}
+          />
         </BarChart>
       </ResponsiveContainer>
     </div>

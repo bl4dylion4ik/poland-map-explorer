@@ -1,5 +1,5 @@
 import React from 'react';
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell, Rectangle } from 'recharts';
 import { getListingLifecycle } from '@/data/mockData';
 import { useTranslation } from 'react-i18next';
 
@@ -34,7 +34,7 @@ export const ListingLifecycleFunnel: React.FC<ListingLifecycleFunnelProps> = ({ 
             tickLine={false}
           />
           <Tooltip
-            cursor={{ fill: 'hsl(var(--secondary))', opacity: 0.2 }}
+            cursor={{ fill: 'transparent' }}
             contentStyle={{
               backgroundColor: 'hsl(var(--card))',
               border: '1px solid hsl(var(--border))',
@@ -42,7 +42,20 @@ export const ListingLifecycleFunnel: React.FC<ListingLifecycleFunnelProps> = ({ 
               fontSize: '12px',
             }}
           />
-          <Bar dataKey="value" radius={[0, 4, 4, 0]} barSize={30}>
+          <Bar 
+            dataKey="value" 
+            radius={[0, 4, 4, 0]} 
+            barSize={30}
+            activeBar={(props: any) => (
+              <Rectangle 
+                {...props} 
+                height={props.height + 4}
+                y={props.y - 2}
+                width={props.width + 4}
+                fillOpacity={0.8}
+              />
+            )}
+          >
             {data.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={entry.fill} />
             ))}
