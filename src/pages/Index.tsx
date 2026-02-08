@@ -131,19 +131,9 @@ const Index: React.FC = () => {
 
   return (
     <FilterProvider>
-      <div className="flex h-screen w-screen overflow-hidden">
+      <div className="flex min-h-[calc(100vh-4rem)] w-screen overflow-hidden">
         {/* Sidebar */}
-        <div className="w-64 bg-sidebar border-r border-sidebar-border flex flex-col h-full z-20 shrink-0">
-          <div className="p-6 border-b border-sidebar-border">
-            <div className="flex items-center gap-2 mb-1">
-              <MapIcon size={24} className="text-primary" />
-              <h1 className="text-xl font-bold tracking-tight text-foreground">MarketNav</h1>
-            </div>
-            <p className="text-xs text-muted-foreground uppercase tracking-wider font-semibold">
-              Poland Analytics
-            </p>
-          </div>
-
+        <div className="w-64 bg-sidebar border-r border-sidebar-border flex flex-col h-[calc(100vh-4rem)] z-20 shrink-0">
           <div className="p-4 flex-1 overflow-y-auto">
             {/* View Toggle */}
             <div className="mb-6">
@@ -225,7 +215,7 @@ const Index: React.FC = () => {
         </div>
 
         {/* Main Content */}
-        <main className="flex-1 overflow-auto">
+        <main className="flex-1 overflow-auto h-[calc(100vh-4rem)]">
           {loading ? (
             <div className="flex flex-col items-center justify-center h-full">
               <Loader2 className="animate-spin text-primary mb-4" size={48} />
