@@ -8,6 +8,7 @@ import { PriceDistributionChart } from '@/components/analytics/PriceDistribution
 import { SupplyChart } from '@/components/analytics/SupplyChart';
 import { RankingTable } from '@/components/analytics/RankingTable';
 import { GlobalFilters } from '@/components/analytics/GlobalFilters';
+import { AnalyticsTabs } from '@/components/analytics/AnalyticsTabs';
 import { FilterProvider } from '@/contexts/FilterContext';
 import { fetchVoivodeships, fetchCounties } from '@/services/geoService';
 import { GeoFeature, GeoJSONCollection, MetricType, MapViewLevel, BreadcrumbItem } from '@/types/map';
@@ -130,6 +131,40 @@ const Index: React.FC = () => {
   const getCurrentLevel = (): MapViewLevel => {
     return breadcrumbs[breadcrumbs.length - 1].level;
   };
+
+  const OverviewContent = (
+    <>
+      <KPICards />
+      <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
+        <div className="xl:col-span-2 bg-card border border-border rounded-xl overflow-hidden relative" style={{ height: 420 }}>
+          <div className="absolute top-3 left-3 z-10">
+            <MapBreadcrumbs items={breadcrumbs} onNavigate={handleNavigate} />
+          </div>
+          <div className="w-full h-full" ref={dashMapRef}>
+            <InteractiveMap
+              geoData={currentViewGeo}
+              subGeoData={allCounties}
+              currentLevel={getCurrentLevel()}
+              selectedRegionId={breadcrumbs[breadcrumbs.length - 1].id}
+              metric={metric}
+              onRegionClick={handleRegionClick}
+              width={mapDimensions.width || 600}
+              height={mapDimensions.height || 420}
+            />
+          </div>
+          <div className="absolute bottom-3 right-3 z-10">
+            <MapLegend metric={metric} />
+          </div>
+        </div>
+        <RankingTable />
+      </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
+        <PriceTrendChart />
+        <PriceDistributionChart />
+        <SupplyChart />
+      </div>
+    </>
+  );
 
   return (
     <FilterProvider>
@@ -257,40 +292,7 @@ const Index: React.FC = () => {
                 <GlobalFilters />
               </div>
 
-              {/* KPI Cards */}
-              <KPICards />
-
-              {/* Map + Ranking */}
-              <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-                <div className="xl:col-span-2 bg-card border border-border rounded-xl overflow-hidden relative" style={{ height: 420 }}>
-                  <div className="absolute top-3 left-3 z-10">
-                    <MapBreadcrumbs items={breadcrumbs} onNavigate={handleNavigate} />
-                  </div>
-                  <div className="w-full h-full" ref={dashMapRef}>
-                    <InteractiveMap
-                      geoData={currentViewGeo}
-                      subGeoData={allCounties}
-                      currentLevel={getCurrentLevel()}
-                      selectedRegionId={breadcrumbs[breadcrumbs.length - 1].id}
-                      metric={metric}
-                      onRegionClick={handleRegionClick}
-                      width={mapDimensions.width || 600}
-                      height={mapDimensions.height || 420}
-                    />
-                  </div>
-                  <div className="absolute bottom-3 right-3 z-10">
-                    <MapLegend metric={metric} />
-                  </div>
-                </div>
-                <RankingTable />
-              </div>
-
-              {/* Charts Row */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-                <PriceTrendChart />
-                <PriceDistributionChart />
-                <SupplyChart />
-              </div>
+              <AnalyticsTabs overviewContent={OverviewContent} />
             </div>
           )}
         </main>
