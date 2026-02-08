@@ -249,7 +249,7 @@ export function getSupplyByType() {
   }));
 }
 
-// --- NEW ANALYTICS AGGREGATORS ---
+// --- ANALYTICS V1 AGGREGATORS ---
 
 // 1. Time on Market Stats
 export function getTimeOnMarketStats(days: number = 90) {
@@ -392,4 +392,252 @@ export function getSupplyByAreaHistory(days: number = 180) {
     });
   }
   return data;
+}
+
+// --- ADDITIONAL ANALYTICS V2 ---
+
+// 1. Overview: Market Health Index
+export function getMarketHealthIndex(days: number = 90) {
+  const data = [];
+  const today = new Date('2024-12-31');
+  
+  for (let i = days; i >= 0; i -= 1) {
+    const date = new Date(today);
+    date.setDate(today.getDate() - i);
+    const dateStr = date.toISOString().split('T')[0];
+    
+    // Simulate composite score (0-100)
+    // Base trend + some volatility
+    const trend = Math.sin(i / 20) * 15;
+    const noise = (seededRandom(i + 200) - 0.5) * 5;
+    const score = Math.min(100, Math.max(0, Math.round(65 + trend + noise)));
+    
+    data.push({
+      date: dateStr,
+      score,
+    });
+  }
+  return data;
+}
+
+// 2. Overview: Supply Pressure (Gauge metrics)
+export function getSupplyPressure(days: number = 90) {
+  // Return single current value for gauge
+  const base = 0.8; // balanced
+  const noise = (seededRandom(days) - 0.5) * 0.4;
+  return Math.max(0, base + noise); // Ratio: new / removed
+}
+
+// 3. Supply: Listing Lifecycle Funnel
+export function getListingLifecycle(days: number = 90) {
+  return [
+    { name: 'New', value: 1200, fill: '#3b82f6' },
+    { name: 'Active', value: 950, fill: '#60a5fa' },
+    { name: 'Price Drop', value: 450, fill: '#f59e0b' },
+    { name: 'Removed', value: 800, fill: '#94a3b8' },
+  ];
+}
+
+// 4. Supply: Price Drop Frequency
+export function getPriceDropFrequency(days: number = 90) {
+  const data = [];
+  const today = new Date('2024-12-31');
+  
+  for (let i = days; i >= 0; i -= 7) { // Weekly
+    const date = new Date(today);
+    date.setDate(today.getDate() - i);
+    const dateStr = date.toISOString().split('T')[0];
+    
+    const base = 15; // %
+    const noise = (seededRandom(i + 300) - 0.5) * 5;
+    
+    data.push({
+      date: dateStr,
+      value: Math.max(0, Math.round(base + noise)),
+    });
+  }
+  return data;
+}
+
+// 5. Supply: Days on Market Distribution
+export function getDaysOnMarketDistribution() {
+  const buckets = ['<7d', '7-14d', '14-30d', '30-60d', '60-90d', '90d+'];
+  return buckets.map((bucket, i) => ({
+    range: bucket,
+    count: Math.round(50 + seededRandom(i + 400) * 150),
+  }));
+}
+
+// 6. Prices: Price Change Distribution
+export function getPriceChangeDistribution() {
+  const buckets = ['-20%+', '-10 to -20%', '-5 to -10%', '-0 to -5%', '0%', '0 to 5%', '5 to 10%', '10%+'];
+  // Skewed towards 0 and small drops
+  const counts = [5, 15, 45, 120, 300, 50, 20, 5];
+  
+  return buckets.map((bucket, i) => ({
+    range: bucket,
+    count: counts[i] + Math.round((seededRandom(i + 500) - 0.5) * 10),
+  }));
+}
+
+// 7. Prices: Volatility Regime
+export function getVolatilityRegimes(days: number = 90) {
+  const data = [];
+  const today = new Date('2024-12-31');
+  
+  for (let i = days; i >= 0; i -= 1) {
+    const date = new Date(today);
+    date.setDate(today.getDate() - i);
+    const dateStr = date.toISOString().split('T')[0];
+    
+    // Simulate regime switching
+    const regime = Math.sin(i / 40) > 0 ? 'Low' : 'Medium';
+    // const highSpike = i > 40 && i < 50; 
+    
+    data.push({
+      date: dateStr,
+      volatility: Math.abs(Math.sin(i / 15) * 2) + 0.5,
+      regime: regime
+    });
+  }
+  return data;
+}
+
+// 8. Prices: Price Stickiness
+export function getPriceStickiness(days: number = 90) {
+  const data = [];
+  const today = new Date('2024-12-31');
+  
+  for (let i = days; i >= 0; i -= 7) {
+    const date = new Date(today);
+    date.setDate(today.getDate() - i);
+    const dateStr = date.toISOString().split('T')[0];
+    
+    data.push({
+      date: dateStr,
+      unchanged: Math.round(70 + Math.sin(i/20) * 10), // % unchanged
+    });
+  }
+  return data;
+}
+
+// 9. Structure: Supply Concentration
+export function getSupplyConcentration() {
+  // Returns concentration by Area
+  const buckets = ['<35m²', '35-50m²', '50-75m²', '75-100m²', '>100m²'];
+  return buckets.map((b, i) => ({
+    segment: b,
+    concentration: Math.round(seededRandom(i + 600) * 1000) // HHI style
+  }));
+}
+
+// 10. Structure: Segment Growth Matrix
+export function getSegmentGrowthMatrix() {
+  const rooms = ['1', '2', '3', '4+'];
+  const areas = ['<35', '35-50', '50-75', '75+'];
+  const data = [];
+  
+  rooms.forEach((r, ri) => {
+    areas.forEach((a, ai) => {
+      const growth = (seededRandom(ri * 10 + ai) - 0.4) * 20; // -8% to +12%
+      data.push({
+        y: r + ' rooms',
+        x: a + ' m²',
+        value: Number(growth.toFixed(1))
+      });
+    });
+  });
+  return data;
+}
+
+// 11. Structure: Luxury vs Mass Market
+export function getLuxuryVsMassSplit(days: number = 180) {
+  const data = [];
+  const today = new Date('2024-12-31');
+  
+  for (let i = 12; i >= 0; i--) { // Monthly
+    const date = `2024-${String(12-i).padStart(2, '0')}`;
+    const total = 100;
+    const luxury = Math.round(20 + Math.sin(i/3) * 5);
+    
+    data.push({
+      date,
+      luxury,
+      mass: total - luxury
+    });
+  }
+  return data;
+}
+
+// 12. Regional: Opportunity Matrix
+export function getRegionalOpportunityMatrix() {
+  return CITIES.map((city, i) => ({
+    name: city.name,
+    x: Number(((seededRandom(i + 700) - 0.5) * 20).toFixed(1)), // Price Growth
+    y: Number((seededRandom(i + 701) * 100).toFixed(1)), // Absorption Speed
+    size: city.population / 10000,
+    category: i % 4 === 0 ? 'Undervalued' : i % 4 === 1 ? 'Overheated' : i % 4 === 2 ? 'Stagnant' : 'Declining'
+  }));
+}
+
+// 13. Regional: Volatility Table
+export function getRegionalVolatility() {
+  return CITIES.map((city, i) => ({
+    id: city.id,
+    city: city.name,
+    score: Number((seededRandom(i + 800) * 10).toFixed(1)),
+    change: Number(((seededRandom(i + 801) - 0.5) * 2).toFixed(1))
+  })).sort((a, b) => b.score - a.score);
+}
+
+// 14. Regional: Rank Change Tracker
+export function getRankChanges() {
+  // Top 5 cities rank evolution over 3 months
+  const cities = ['Warszawa', 'Kraków', 'Wrocław', 'Gdańsk', 'Poznań'];
+  const months = ['Oct', 'Nov', 'Dec'];
+  
+  const data = [];
+  months.forEach((m, mi) => {
+    cities.forEach((c, ci) => {
+      // Simulate rank shuffling
+      const rank = (ci + 1 + (mi % 2 === 0 ? 0 : (ci % 2 === 0 ? 1 : -1))); 
+      data.push({
+        month: m,
+        city: c,
+        rank: Math.max(1, Math.min(5, rank))
+      });
+    });
+  });
+  return data;
+}
+
+// 15. Advanced: Correlations
+export function getCorrelations() {
+  const metrics = ['Supply', 'Price', 'Vol', 'Absorb'];
+  const data = [];
+  
+  metrics.forEach((m1, i) => {
+    metrics.forEach((m2, j) => {
+      let val = 1;
+      if (i !== j) {
+        val = (seededRandom(i * 10 + j + 900) - 0.5) * 2; // -1 to 1
+      }
+      data.push({
+        x: m1,
+        y: m2,
+        value: Number(val.toFixed(2))
+      });
+    });
+  });
+  return data;
+}
+
+// 16. Advanced: Scenarios
+export function getScenarioSensitivity() {
+  return [
+    { name: 'Base', price: 0, supply: 0 },
+    { name: 'Supply +10%', price: -2.5, supply: 10 },
+    { name: 'Demand -10%', price: -4.0, supply: 2 },
+    { name: 'Rates -1%', price: 5.5, supply: -5 },
+  ];
 }

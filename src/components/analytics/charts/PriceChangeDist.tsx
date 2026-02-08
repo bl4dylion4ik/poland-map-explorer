@@ -1,0 +1,51 @@
+import React from 'react';
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import { getPriceChangeDistribution } from '@/data/mockData';
+import { useTranslation } from 'react-i18next';
+
+export const PriceChangeDist: React.FC = () => {
+  const { t } = useTranslation('analytics');
+  const data = getPriceChangeDistribution();
+
+  return (
+    <div className="bg-card border border-border rounded-xl p-5 h-full">
+      <div className="mb-4">
+        <h3 className="text-sm font-semibold text-foreground">{t('charts.priceChangeDist')}</h3>
+        <p className="text-xs text-muted-foreground">{t('charts.priceChangeDistSub')}</p>
+      </div>
+      <ResponsiveContainer width="100%" height={250}>
+        <BarChart data={data}>
+          <CartesianGrid strokeDasharray="3 3" stroke="hsl(var(--border))" vertical={false} />
+          <XAxis 
+            dataKey="range" 
+            tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }} 
+            axisLine={false} 
+            tickLine={false}
+            interval={0}
+          />
+          <YAxis 
+            tick={{ fontSize: 10, fill: 'hsl(var(--muted-foreground))' }} 
+            axisLine={false} 
+            tickLine={false}
+          />
+          <Tooltip
+            contentStyle={{
+              backgroundColor: 'hsl(var(--card))',
+              border: '1px solid hsl(var(--border))',
+              borderRadius: '8px',
+              fontSize: '12px',
+            }}
+          />
+          <Bar dataKey="count" radius={[4, 4, 0, 0]}>
+            {data.map((entry, index) => (
+              <Cell 
+                key={`cell-${index}`} 
+                fill={entry.range.includes('-') ? '#ef4444' : entry.range === '0%' ? 'hsl(var(--muted))' : '#10b981'} 
+              />
+            ))}
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
+    </div>
+  );
+};
