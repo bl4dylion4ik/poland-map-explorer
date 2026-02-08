@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Map as MapIcon, BarChart3, Home } from 'lucide-react';
+import { Map as MapIcon, BarChart3, Home, CreditCard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export const Navbar: React.FC = () => {
@@ -32,6 +32,16 @@ export const Navbar: React.FC = () => {
             >
               <Home size={16} />
               <span className="hidden sm:inline">Home</span>
+            </Button>
+          </Link>
+          <Link to="/pricing">
+            <Button
+              variant={isActive('/pricing') ? 'secondary' : 'ghost'}
+              size="sm"
+              className={`gap-2 ${isActive('/pricing') ? 'border border-primary/20' : ''}`}
+            >
+              <CreditCard size={16} />
+              <span className="hidden sm:inline">Pricing</span>
             </Button>
           </Link>
           <Link to="/analytics">
