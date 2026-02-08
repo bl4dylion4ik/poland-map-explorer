@@ -127,10 +127,9 @@ export const DeckGLMap: React.FC<DeckGLMapProps> = ({
         if (info.object) {
           const id = info.object.properties.id || info.object.properties.kod || info.object.properties.nazwa;
           const data = statsMap.get(id) || null;
-          const evt = info.event?.srcEvent as MouseEvent;
           setTooltip({
-            x: evt ? evt.clientX : info.x,
-            y: evt ? evt.clientY : info.y,
+            x: info.x,
+            y: info.y,
             data,
             visible: true
           });
@@ -213,7 +212,8 @@ export const DeckGLMap: React.FC<DeckGLMapProps> = ({
       fontWeight: 600,
       fontFamily: 'Inter, system-ui, sans-serif',
       outlineWidth: 2,
-      outlineColor: [255, 255, 255, 200]
+      outlineColor: [255, 255, 255, 200],
+      characterSet: 'auto'
     }),
   ].filter(Boolean);
 
@@ -273,7 +273,6 @@ export const DeckGLMap: React.FC<DeckGLMapProps> = ({
         x={tooltip.x}
         y={tooltip.y}
         data={tooltip.data}
-        metric={metric}
         visible={tooltip.visible}
       />
     </div>
