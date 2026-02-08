@@ -13,10 +13,12 @@ import { fetchVoivodeships, fetchCounties } from '@/services/geoService';
 import { GeoFeature, GeoJSONCollection, MetricType, MapViewLevel, BreadcrumbItem } from '@/types/map';
 import { Loader2, Map as MapIcon, Layers, DollarSign, TrendingUp, BarChart3, LayoutDashboard } from 'lucide-react';
 import { METRICS } from '@/constants/map';
+import { useTranslation } from 'react-i18next';
 
 type ViewTab = 'dashboard' | 'map';
 
 const Index: React.FC = () => {
+  const { t } = useTranslation('analytics');
   const [metric, setMetric] = useState<MetricType>('supply');
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<ViewTab>('dashboard');
@@ -138,7 +140,7 @@ const Index: React.FC = () => {
             {/* View Toggle */}
             <div className="mb-6">
               <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-2">
-                View
+                {t('sidebar.view')}
               </h3>
               <div className="space-y-1">
                 <button
@@ -150,7 +152,7 @@ const Index: React.FC = () => {
                   }`}
                 >
                   <LayoutDashboard size={16} className={activeTab === 'dashboard' ? 'text-primary' : ''} />
-                  Dashboard
+                  {t('sidebar.dashboard')}
                 </button>
                 <button
                   onClick={() => setActiveTab('map')}
@@ -161,7 +163,7 @@ const Index: React.FC = () => {
                   }`}
                 >
                   <MapIcon size={16} className={activeTab === 'map' ? 'text-primary' : ''} />
-                  Full Map
+                  {t('sidebar.fullMap')}
                 </button>
               </div>
             </div>
@@ -169,7 +171,7 @@ const Index: React.FC = () => {
             {/* Data Layers */}
             <div className="mb-6">
               <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-2">
-                Data Layers
+                {t('sidebar.dataLayers')}
               </h3>
               <div className="space-y-1">
                 {METRICS.map((m) => {
@@ -186,7 +188,7 @@ const Index: React.FC = () => {
                       }`}
                     >
                       <Icon size={16} className={isActive ? 'text-primary' : ''} />
-                      {m.label}
+                      {t(`sidebar.metrics.${m.id}`)}
                     </button>
                   );
                 })}
@@ -196,13 +198,13 @@ const Index: React.FC = () => {
             {/* Map Settings */}
             <div>
               <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-2">
-                Map Settings
+                {t('sidebar.mapSettings')}
               </h3>
               <div className="px-3 py-3 bg-secondary rounded-lg border border-border space-y-2.5">
                 {[
-                  ['Boundaries', 'Official'],
-                  ['Projection', 'Mercator'],
-                  ['Data Source', 'GUS / Gov'],
+                  [t('sidebar.boundaries'), 'Official'],
+                  [t('sidebar.projection'), 'Mercator'],
+                  [t('sidebar.dataSource'), 'GUS / Gov'],
                 ].map(([label, value]) => (
                   <div key={label} className="flex items-center justify-between text-xs text-muted-foreground">
                     <span>{label}</span>
@@ -219,8 +221,8 @@ const Index: React.FC = () => {
           {loading ? (
             <div className="flex flex-col items-center justify-center h-full">
               <Loader2 className="animate-spin text-primary mb-4" size={48} />
-              <h2 className="text-xl font-semibold text-foreground">Initializing Map Data...</h2>
-              <p className="text-muted-foreground mt-2">Loading official administrative boundaries</p>
+              <h2 className="text-xl font-semibold text-foreground">{t('map.loading')}</h2>
+              <p className="text-muted-foreground mt-2">{t('map.loadingSub')}</p>
             </div>
           ) : activeTab === 'map' ? (
             /* Full Map View */
@@ -246,10 +248,10 @@ const Index: React.FC = () => {
                 <div>
                   <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
                     <BarChart3 size={20} className="text-primary" />
-                    Market Overview
+                    {t('header.title')}
                   </h2>
                   <p className="text-xs text-muted-foreground mt-0.5">
-                    Real estate analytics across Poland
+                    {t('header.subtitle')}
                   </p>
                 </div>
                 <GlobalFilters />

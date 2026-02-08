@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
 import { getTopCities } from '@/data/mockData';
 import { ArrowUpDown, TrendingUp, TrendingDown } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 type SortMetric = 'price' | 'supply' | 'growth';
 
 export const RankingTable: React.FC = () => {
+  const { t } = useTranslation('analytics');
   const [sortBy, setSortBy] = useState<SortMetric>('price');
   const data = getTopCities(sortBy, 10);
 
   return (
     <div className="bg-card border border-border rounded-xl p-5">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="text-sm font-semibold text-foreground">City Rankings</h3>
+        <h3 className="text-sm font-semibold text-foreground">{t('ranking.title')}</h3>
         <div className="flex gap-1">
           {(['price', 'supply', 'growth'] as SortMetric[]).map((m) => (
             <button
@@ -23,7 +25,7 @@ export const RankingTable: React.FC = () => {
                   : 'text-muted-foreground hover:text-foreground hover:bg-secondary'
               }`}
             >
-              {m === 'price' ? 'Price' : m === 'supply' ? 'Supply' : 'Growth'}
+              {t(`ranking.${m}`)}
             </button>
           ))}
         </div>
@@ -34,11 +36,11 @@ export const RankingTable: React.FC = () => {
           <thead>
             <tr className="text-muted-foreground border-b border-border">
               <th className="text-left py-2 font-medium">#</th>
-              <th className="text-left py-2 font-medium">City</th>
-              <th className="text-left py-2 font-medium">Voivodeship</th>
+              <th className="text-left py-2 font-medium">{t('ranking.city')}</th>
+              <th className="text-left py-2 font-medium">{t('ranking.voivodeship')}</th>
               <th className="text-right py-2 font-medium">
                 <span className="flex items-center justify-end gap-1">
-                  {sortBy === 'price' ? 'Avg PLN/m²' : sortBy === 'supply' ? 'Active' : 'YoY'}
+                  {sortBy === 'price' ? t('ranking.avgPrice') : sortBy === 'supply' ? t('ranking.active') : t('ranking.yoy')}
                   <ArrowUpDown size={10} />
                 </span>
               </th>

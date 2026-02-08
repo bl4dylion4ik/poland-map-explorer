@@ -1,3 +1,64 @@
 {
-  "placeholder": "Analytics translations coming soon"
+  "sidebar": {
+    "view": "View",
+    "dashboard": "Dashboard",
+    "fullMap": "Full Map",
+    "dataLayers": "Data Layers",
+    "mapSettings": "Map Settings",
+    "boundaries": "Boundaries",
+    "projection": "Projection",
+    "dataSource": "Data Source",
+    "metrics": {
+      "supply": "Market Supply",
+      "price": "Median Price",
+      "growth": "YoY Growth"
+    }
+  },
+  "header": {
+    "title": "Market Overview",
+    "subtitle": "Real estate analytics across Poland"
+  },
+  "filters": {
+    "label": "Filters",
+    "voivodeships": "All Voivodeships",
+    "cities": "All Cities",
+    "types": "All Types",
+    "clear": "Clear"
+  },
+  "kpi": {
+    "activeListings": "Active Listings",
+    "avgPrice": "Avg Price/m²",
+    "medianPrice": "Median Price/m²",
+    "soldRate": "Sold Rate",
+    "vsLastYear": "vs last year"
+  },
+  "map": {
+    "loading": "Initializing Map Data...",
+    "loadingSub": "Loading official administrative boundaries",
+    "legend": "Legend",
+    "low": "Low",
+    "high": "High",
+    "intensity": "Intensity based on regional max"
+  },
+  "charts": {
+    "priceTrend": "Price Trends",
+    "priceDistribution": "Price Distribution",
+    "supply": "Supply by Property Type",
+    "average": "Average",
+    "median": "Median",
+    "active": "Active",
+    "sold": "Sold",
+    "reserved": "Reserved"
+  },
+  "ranking": {
+    "title": "City Rankings",
+    "city": "City",
+    "voivodeship": "Voivodeship",
+    "price": "Price",
+    "supply": "Supply",
+    "growth": "Growth",
+    "avgPrice": "Avg PLN/m²",
+    "active": "Active",
+    "yoy": "YoY"
+  }
 }

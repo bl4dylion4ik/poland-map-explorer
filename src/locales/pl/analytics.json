@@ -1,3 +1,64 @@
 {
-  "placeholder": "Tłumaczenia analityki wkrótce"
+  "sidebar": {
+    "view": "Widok",
+    "dashboard": "Panel",
+    "fullMap": "Pełna mapa",
+    "dataLayers": "Warstwy danych",
+    "mapSettings": "Ustawienia mapy",
+    "boundaries": "Granice",
+    "projection": "Projekcja",
+    "dataSource": "Źródło danych",
+    "metrics": {
+      "supply": "Podaż rynku",
+      "price": "Mediana ceny",
+      "growth": "Wzrost r/r"
+    }
+  },
+  "header": {
+    "title": "Przegląd rynku",
+    "subtitle": "Analityka nieruchomości w Polsce"
+  },
+  "filters": {
+    "label": "Filtry",
+    "voivodeships": "Wszystkie województwa",
+    "cities": "Wszystkie miasta",
+    "types": "Wszystkie typy",
+    "clear": "Wyczyść"
+  },
+  "kpi": {
+    "activeListings": "Aktywne oferty",
+    "avgPrice": "Śr. cena/m²",
+    "medianPrice": "Mediana ceny/m²",
+    "soldRate": "Wskaźnik sprzedaży",
+    "vsLastYear": "vs rok temu"
+  },
+  "map": {
+    "loading": "Inicjalizacja danych mapy...",
+    "loadingSub": "Ładowanie oficjalnych granic administracyjnych",
+    "legend": "Legenda",
+    "low": "Niska",
+    "high": "Wysoka",
+    "intensity": "Intensywność wg maks. regionalnego"
+  },
+  "charts": {
+    "priceTrend": "Trendy cenowe",
+    "priceDistribution": "Rozkład cen",
+    "supply": "Podaż wg typu nieruchomości",
+    "average": "Średnia",
+    "median": "Mediana",
+    "active": "Aktywne",
+    "sold": "Sprzedane",
+    "reserved": "Zarezerwowane"
+  },
+  "ranking": {
+    "title": "Ranking miast",
+    "city": "Miasto",
+    "voivodeship": "Województwo",
+    "price": "Cena",
+    "supply": "Podaż",
+    "growth": "Wzrost",
+    "avgPrice": "Śr. PLN/m²",
+    "active": "Aktywne",
+    "yoy": "R/R"
+  }
 }

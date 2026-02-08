@@ -38,7 +38,7 @@ export const HeroSection: React.FC = () => {
             <Link to="/analytics">
               <Button size="lg" className="gap-2 px-8 text-base font-semibold shadow-lg hover:shadow-primary/20">
                 <BarChart3 size={20} />
-                {t('cta.button', { ns: 'common' })}
+                {t('cta.explore', { ns: 'common' })}
                 <ArrowRight size={18} />
               </Button>
             </Link>

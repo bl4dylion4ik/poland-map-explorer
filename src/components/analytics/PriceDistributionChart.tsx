@@ -1,13 +1,15 @@
 import React from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { getPriceDistribution } from '@/data/mockData';
+import { useTranslation } from 'react-i18next';
 
 export const PriceDistributionChart: React.FC = () => {
+  const { t } = useTranslation('analytics');
   const data = getPriceDistribution();
 
   return (
     <div className="bg-card border border-border rounded-xl p-5">
-      <h3 className="text-sm font-semibold text-foreground mb-4">Price Distribution (PLN/m²)</h3>
+      <h3 className="text-sm font-semibold text-foreground mb-4">{t('charts.priceDistribution')} (PLN/m²)</h3>
       <ResponsiveContainer width="100%" height={220}>
         <BarChart data={data}>
           <CartesianGrid strokeDasharray="3 3" stroke="hsl(217, 33%, 17%)" />

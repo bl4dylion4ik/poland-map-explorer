@@ -1,8 +1,10 @@
 import React from 'react';
 import { LISTINGS } from '@/data/mockData';
 import { TrendingUp, Home, DollarSign, BarChart3 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export const KPICards: React.FC = () => {
+  const { t } = useTranslation('analytics');
   const activeListings = LISTINGS.filter(l => l.status === 'active').length;
   const totalListings = LISTINGS.length;
   const prices = LISTINGS.map(l => l.pricePerM2);
@@ -14,28 +16,28 @@ export const KPICards: React.FC = () => {
 
   const cards = [
     {
-      title: 'Active Listings',
+      title: t('kpi.activeListings'),
       value: activeListings.toLocaleString(),
       change: '+12.5%',
       positive: true,
       icon: Home,
     },
     {
-      title: 'Avg Price/m²',
+      title: t('kpi.avgPrice'),
       value: `${avgPrice.toLocaleString()} PLN`,
       change: '+8.3%',
       positive: true,
       icon: DollarSign,
     },
     {
-      title: 'Median Price/m²',
+      title: t('kpi.medianPrice'),
       value: `${medianPrice.toLocaleString()} PLN`,
       change: '+5.7%',
       positive: true,
       icon: BarChart3,
     },
     {
-      title: 'Sold Rate',
+      title: t('kpi.soldRate'),
       value: `${soldRate}%`,
       change: '+2.1%',
       positive: true,
@@ -62,7 +64,7 @@ export const KPICards: React.FC = () => {
               card.positive ? 'text-emerald-400' : 'text-red-400'
             }`}
           >
-            {card.change} vs last year
+            {card.change} {t('kpi.vsLastYear')}
           </div>
         </div>
       ))}
