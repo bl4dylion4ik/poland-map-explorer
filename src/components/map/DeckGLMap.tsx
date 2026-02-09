@@ -23,6 +23,7 @@ interface DeckGLMapProps {
   currentLevel: MapViewLevel;
   bounds?: [number, number, number, number];
   selectedRegionFeature?: GeoFeature | null;
+  isFullAccess?: boolean;
 }
 
 export const DeckGLMap: React.FC<DeckGLMapProps> = ({
@@ -38,6 +39,7 @@ export const DeckGLMap: React.FC<DeckGLMapProps> = ({
   currentLevel,
   bounds,
   selectedRegionFeature,
+  isFullAccess = true,
 }) => {
   const { setCity } = useFilters();
   const [tooltip, setTooltip] = useState<{
@@ -78,6 +80,17 @@ export const DeckGLMap: React.FC<DeckGLMapProps> = ({
       .range([COLORS[metric].low, COLORS[metric].high]);
   }, [statsMap, metric]);
 
+  const handleViewStateChangeInternal = (params: any) => {
+    if (!isFullAccess) {
+      // Restrict zoom and pan for free users
+      const nextViewState = params.viewState;
+      if (nextViewState.zoom > 7.5) {
+        return; // Block zooming in past voivodeship level
+      }
+    }
+    onViewStateChange(params);
+  };
+
   const layers = [
     // 0. World Mask - Hides everything outside Poland
     // In DeckGL, we render this ABOVE Mapbox but BELOW data layers
@@ -100,7 +113,10 @@ export const DeckGLMap: React.FC<DeckGLMapProps> = ({
       lineWidthMinPixels: 1,
       getLineColor: [148, 163, 184, 150],
       getFillColor: [0, 0, 0, 0],
-      onClick: (info) => info.object && onRegionClick(info.object),
+      onClick: (info) => {
+        if (!isFullAccess) return;
+        info.object && onRegionClick(info.object);
+      },
     }),
 
     // 2. Active Data Layer
@@ -110,7 +126,7 @@ export const DeckGLMap: React.FC<DeckGLMapProps> = ({
       pickable: true,
       stroked: true,
       filled: true,
-      lineWidthMinPixels: currentLevel === 'district' || currentLevel === 'city' ? 1.5 : 1,
+      lineWidthMinPixels: 1,
       getLineColor: [100, 116, 139],
       getFillColor: (f: any) => {
         const id = f.properties.id || f.properties.kod || f.properties.nazwa;
@@ -122,7 +138,10 @@ export const DeckGLMap: React.FC<DeckGLMapProps> = ({
       },
       autoHighlight: true,
       highlightColor: [0, 0, 0, 20],
-      onClick: (info) => info.object && onRegionClick(info.object),
+      onClick: (info) => {
+        if (!isFullAccess) return;
+        info.object && onRegionClick(info.object);
+      },
       onHover: (info: any) => {
         if (info.object) {
           const id = info.object.properties.id || info.object.properties.kod || info.object.properties.nazwa;
@@ -154,7 +173,7 @@ export const DeckGLMap: React.FC<DeckGLMapProps> = ({
     new ScatterplotLayer({
       id: 'major-cities',
       data: cities,
-      visible: (viewState?.zoom || 0) > 8,
+      visible: isFullAccess && (viewState?.zoom || 0) > 8,
       pickable: true,
       opacity: 1,
       stroked: true,
@@ -168,6 +187,7 @@ export const DeckGLMap: React.FC<DeckGLMapProps> = ({
       getFillColor: [255, 255, 255],
       getLineColor: [15, 23, 42],
       onClick: (info) => {
+        if (!isFullAccess) return;
         if (info.object) {
           setCity(info.object.name);
           onCityClick(info.object);
@@ -199,7 +219,7 @@ export const DeckGLMap: React.FC<DeckGLMapProps> = ({
     new TextLayer({
       id: 'city-labels',
       data: cities,
-      visible: (viewState?.zoom || 0) > 9,
+      visible: isFullAccess && (viewState?.zoom || 0) > 9,
       pickable: false,
       getPosition: (d: City) => [d.lng, d.lat],
       getText: (d: City) => d.name,
@@ -221,8 +241,8 @@ export const DeckGLMap: React.FC<DeckGLMapProps> = ({
     <div className="relative w-full h-full rounded-xl overflow-hidden cursor-crosshair bg-slate-50">
       <DeckGL
         viewState={viewState}
-        onViewStateChange={(e) => onViewStateChange(e.viewState)}
-        controller={true}
+        onViewStateChange={handleViewStateChangeInternal}
+        controller={isFullAccess}
         layers={layers}
         getCursor={() => 'default'}
       >
@@ -233,8 +253,13 @@ export const DeckGLMap: React.FC<DeckGLMapProps> = ({
           attributionControl={false}
           maxBounds={bounds}
           minZoom={5.5}
-          maxZoom={18}
+          maxZoom={isFullAccess ? 18 : 7.5}
           style={{ opacity: basemapOpacity }}
+          scrollZoom={isFullAccess}
+          dragPan={isFullAccess}
+          dragRotate={isFullAccess}
+          doubleClickZoom={isFullAccess}
+          touchZoomRotate={isFullAccess}
         >
           {/* 3D Buildings Layer */}
           <Layer

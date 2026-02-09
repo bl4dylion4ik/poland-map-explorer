@@ -1,3 +1,20 @@
+export type UserPlan = 'free' | 'pro' | 'investor';
+
+export interface User {
+  id: string;
+  email: string;
+  plan: UserPlan;
+}
+
+export interface City {
+  id: string;
+  name: string;
+  voivodeship: string;
+  lat: number;
+  lng: number;
+  population: number;
+}
+
 export interface GeoFeature {
   type: 'Feature';
   properties: {

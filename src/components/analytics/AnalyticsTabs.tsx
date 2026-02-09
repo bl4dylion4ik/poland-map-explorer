@@ -36,12 +36,14 @@ import { RankChangeTracker } from './charts/RankChangeTracker';
 // Advanced
 import { CorrelationMatrix } from './charts/CorrelationMatrix';
 import { ScenarioSensitivity } from './charts/ScenarioSensitivity';
+import { LockedOverlay } from './LockedOverlay';
 
 interface AnalyticsTabsProps {
   overviewContent: React.ReactNode;
+  isFullAccess?: boolean;
 }
 
-export const AnalyticsTabs: React.FC<AnalyticsTabsProps> = ({ overviewContent }) => {
+export const AnalyticsTabs: React.FC<AnalyticsTabsProps> = ({ overviewContent, isFullAccess = true }) => {
   const [timeRange, setTimeRange] = useState<TimeRange>(30);
 
   return (
@@ -51,7 +53,7 @@ export const AnalyticsTabs: React.FC<AnalyticsTabsProps> = ({ overviewContent })
         <TimeFilter 
           value={timeRange} 
           onChange={setTimeRange} 
-          disabledRanges={timeRange === 1 ? [1] : []} // Example logic
+          disabledRanges={!isFullAccess ? [1, 7, 90] : []} // Restrict ranges for free users
         />
       </div>
 
@@ -89,7 +91,8 @@ export const AnalyticsTabs: React.FC<AnalyticsTabsProps> = ({ overviewContent })
 
         {/* 3. PRICES & VOLATILITY TAB */}
         <TabsContent value="prices" className="space-y-4 animate-fade-in-up">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative">
+            {!isFullAccess && <LockedOverlay />}
             <PriceDivergenceChart />
             <VolatilityMatrix />
           </div>
@@ -101,7 +104,8 @@ export const AnalyticsTabs: React.FC<AnalyticsTabsProps> = ({ overviewContent })
         </TabsContent>
 
         {/* 4. MARKET STRUCTURE TAB */}
-        <TabsContent value="structure" className="space-y-4 animate-fade-in-up">
+        <TabsContent value="structure" className="space-y-4 animate-fade-in-up relative">
+          {!isFullAccess && <LockedOverlay title="Analyze Market Structure" />}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <MarketShareChart />
             <MarketStructureHeatmap />
@@ -115,7 +119,8 @@ export const AnalyticsTabs: React.FC<AnalyticsTabsProps> = ({ overviewContent })
 
         {/* 5. REGIONAL TAB */}
         <TabsContent value="regional" className="space-y-4 animate-fade-in-up">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 relative">
+             {!isFullAccess && <LockedOverlay title="Regional Opportunity Matrix" />}
             <div className="lg:col-span-2">
               <RegionalOpportunityMatrix />
             </div>
@@ -130,7 +135,8 @@ export const AnalyticsTabs: React.FC<AnalyticsTabsProps> = ({ overviewContent })
         </TabsContent>
 
         {/* 6. ADVANCED TAB */}
-        <TabsContent value="advanced" className="space-y-4 animate-fade-in-up">
+        <TabsContent value="advanced" className="space-y-4 animate-fade-in-up relative">
+           {!isFullAccess && <LockedOverlay title="Advanced Predictive Analytics" />}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <CorrelationMatrix />
             <ScenarioSensitivity />

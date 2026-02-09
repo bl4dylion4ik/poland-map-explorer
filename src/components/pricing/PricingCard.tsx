@@ -6,6 +6,7 @@ import { Badge } from '@/components/ui/badge';
 import { Check } from 'lucide-react';
 import { PricingTier } from '@/data/pricingData';
 import { useTranslation } from 'react-i18next';
+import { useAuth } from '@/contexts/AuthContext';
 
 interface PricingCardProps extends PricingTier {}
 
@@ -22,6 +23,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({
   badgeKey,
 }) => {
   const { t } = useTranslation('pricing');
+  const { user } = useAuth();
   
   // Note: CTA translation uses common namespace
   const { t: tCommon } = useTranslation('common');
@@ -30,7 +32,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({
     <Card
       className={`relative flex flex-col p-8 transition-all ${
         highlighted
-          ? 'border-2 border-primary/50 bg-gradient-to-br from-primary/5 to-primary/10 shadow-lg shadow-primary/10 scale-105'
+          ? 'border-2 border-primary/50 bg-gradient-to-br from-primary/5 to-primary/10 shadow-lg shadow-primary/10 md:scale-105'
           : 'border-border bg-card hover:border-primary/30 hover:shadow-lg'
       }`}
     >
@@ -60,7 +62,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({
       </div>
 
       {/* CTA Button */}
-      <Link to="/analytics" className="mb-8">
+      <Link to={user ? "/analytics" : "/auth"} className="mb-8">
         <Button
           size="lg"
           className={`w-full ${
@@ -69,7 +71,7 @@ export const PricingCard: React.FC<PricingCardProps> = ({
               : 'bg-secondary text-secondary-foreground hover:bg-secondary/80'
           }`}
         >
-          {tCommon('cta.chooseplan', { plan: t(nameKey) })}
+          {user ? t('plans.current') : tCommon('cta.chooseplan', { plan: t(nameKey) })}
         </Button>
       </Link>
 

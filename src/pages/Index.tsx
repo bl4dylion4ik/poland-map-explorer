@@ -13,16 +13,37 @@ import { FilterProvider } from '@/contexts/FilterContext';
 import { fetchVoivodeships, fetchCounties, generatePolandMask } from '@/services/geoService';
 import { CITIES } from '@/data/mockData';
 import { GeoFeature, GeoJSONCollection, MetricType, MapViewLevel, BreadcrumbItem, City } from '@/types/map';
-import { Loader2, Map as MapIcon, Layers, DollarSign, TrendingUp, BarChart3, LayoutDashboard } from 'lucide-react';
+import { Loader2, Map as MapIcon, Layers, DollarSign, TrendingUp, BarChart3, LayoutDashboard, Settings2 } from 'lucide-react';
 import { METRICS, MAP_CENTER_POLAND, POLAND_BOUNDS } from '@/constants/map';
 import { useTranslation } from 'react-i18next';
 import bbox from '@turf/bbox';
 import { WebMercatorViewport, FlyToInterpolator } from '@deck.gl/core';
+import { useIsMobile } from '@/hooks/use-mobile';
+import { useAuth } from '@/contexts/AuthContext';
+import { Button } from '@/components/ui/button';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
 
 type ViewTab = 'dashboard' | 'map';
 
-const Index: React.FC = () => {
+interface IndexProps {
+  devForceFull?: boolean;
+}
+
+const Index: React.FC<IndexProps> = ({ devForceFull = false }) => {
   const { t } = useTranslation('analytics');
+  const isMobile = useIsMobile();
+  const { user } = useAuth();
+  
+  const isFullAccess = useMemo(() => {
+    return devForceFull || (user && (user.plan === 'pro' || user.plan === 'investor'));
+  }, [devForceFull, user]);
+
   const [metric, setMetric] = useState<MetricType>('supply');
   const [loading, setLoading] = useState(true);
   const [activeTab, setActiveTab] = useState<ViewTab>('dashboard');
@@ -175,11 +196,92 @@ const Index: React.FC = () => {
       return allCounties;
   }, [viewState.zoom, allVoivodeships, allCounties]);
 
+  const SidebarContent = (
+    <div className="flex-1 overflow-y-auto">
+      {/* View Toggle */}
+      <div className="mb-6">
+        <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-2">
+          {t('sidebar.view')}
+        </h3>
+        <div className="space-y-1">
+          <button
+            onClick={() => setActiveTab('dashboard')}
+            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+              activeTab === 'dashboard'
+                ? 'bg-sidebar-accent text-sidebar-accent-foreground border border-primary/20'
+                : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
+            }`}
+          >
+            <LayoutDashboard size={16} className={activeTab === 'dashboard' ? 'text-primary' : ''} />
+            {t('sidebar.dashboard')}
+          </button>
+          <button
+            onClick={() => setActiveTab('map')}
+            className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+              activeTab === 'map'
+                ? 'bg-sidebar-accent text-sidebar-accent-foreground border border-primary/20'
+                : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
+            }`}
+          >
+            <MapIcon size={16} className={activeTab === 'map' ? 'text-primary' : ''} />
+            {t('sidebar.fullMap')}
+          </button>
+        </div>
+      </div>
+
+      {/* Data Layers */}
+      <div className="mb-6">
+        <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-2">
+          {t('sidebar.dataLayers')}
+        </h3>
+        <div className="space-y-1">
+          {METRICS.map((m) => {
+            const isActive = metric === m.id;
+            const Icon = m.id === 'supply' ? Layers : m.id === 'price' ? DollarSign : TrendingUp;
+            return (
+              <button
+                key={m.id}
+                onClick={() => setMetric(m.id as MetricType)}
+                className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
+                  isActive
+                    ? 'bg-sidebar-accent text-sidebar-accent-foreground border border-primary/20'
+                    : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
+                }`}
+              >
+                <Icon size={16} className={isActive ? 'text-primary' : ''} />
+                {t(`sidebar.metrics.${m.id}`)}
+              </button>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Map Settings */}
+      <div>
+        <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-2">
+          {t('sidebar.mapSettings')}
+        </h3>
+        <div className="px-3 py-3 bg-secondary rounded-lg border border-border space-y-2.5">
+          {[
+            [t('sidebar.boundaries'), 'Official'],
+            [t('sidebar.projection'), 'Mercator'],
+            [t('sidebar.dataSource'), 'GUS / Gov'],
+          ].map(([label, value]) => (
+            <div key={label} className="flex items-center justify-between text-xs text-muted-foreground">
+              <span>{label}</span>
+              <span className="bg-card px-2 py-0.5 rounded text-foreground/80">{value}</span>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
   const OverviewContent = (
     <>
       <KPICards />
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
-        <div className="xl:col-span-2 h-[850px] relative rounded-xl overflow-hidden border border-border bg-slate-50">
+        <div className="xl:col-span-2 h-[500px] md:h-[850px] relative rounded-xl overflow-hidden border border-border bg-slate-50">
           <div className="absolute top-3 left-3 z-10">
             <MapBreadcrumbs items={breadcrumbs} onNavigate={handleNavigate} />
           </div>
@@ -196,12 +298,13 @@ const Index: React.FC = () => {
             currentLevel={mapLevel as MapViewLevel}
             bounds={POLAND_BOUNDS}
             selectedRegionFeature={selectedFeature}
+            isFullAccess={isFullAccess}
           />
           <div className="absolute bottom-3 right-3 z-10">
             <MapLegend metric={metric} />
           </div>
         </div>
-        <div className="h-[850px] overflow-hidden">
+        <div className="h-[500px] md:h-[850px] overflow-hidden">
              <RankingTable />
         </div>
       </div>
@@ -215,91 +318,14 @@ const Index: React.FC = () => {
 
   return (
     <FilterProvider>
-      <div className="flex min-h-[calc(100vh-4rem)] w-screen overflow-hidden">
-        {/* Sidebar */}
-        <div className="w-64 bg-sidebar border-r border-sidebar-border flex flex-col h-[calc(100vh-4rem)] z-20 shrink-0">
-          <div className="p-4 flex-1 overflow-y-auto">
-            {/* View Toggle */}
-            <div className="mb-6">
-              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-2">
-                {t('sidebar.view')}
-              </h3>
-              <div className="space-y-1">
-                <button
-                  onClick={() => setActiveTab('dashboard')}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                    activeTab === 'dashboard'
-                      ? 'bg-sidebar-accent text-sidebar-accent-foreground border border-primary/20'
-                      : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
-                  }`}
-                >
-                  <LayoutDashboard size={16} className={activeTab === 'dashboard' ? 'text-primary' : ''} />
-                  {t('sidebar.dashboard')}
-                </button>
-                <button
-                  onClick={() => setActiveTab('map')}
-                  className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                    activeTab === 'map'
-                      ? 'bg-sidebar-accent text-sidebar-accent-foreground border border-primary/20'
-                      : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
-                  }`}
-                >
-                  <MapIcon size={16} className={activeTab === 'map' ? 'text-primary' : ''} />
-                  {t('sidebar.fullMap')}
-                </button>
-              </div>
-            </div>
-
-            {/* Data Layers */}
-            <div className="mb-6">
-              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-2">
-                {t('sidebar.dataLayers')}
-              </h3>
-              <div className="space-y-1">
-                {METRICS.map((m) => {
-                  const isActive = metric === m.id;
-                  const Icon = m.id === 'supply' ? Layers : m.id === 'price' ? DollarSign : TrendingUp;
-                  return (
-                    <button
-                      key={m.id}
-                      onClick={() => setMetric(m.id as MetricType)}
-                      className={`w-full flex items-center gap-3 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                        isActive
-                          ? 'bg-sidebar-accent text-sidebar-accent-foreground border border-primary/20'
-                          : 'text-muted-foreground hover:bg-secondary hover:text-foreground'
-                      }`}
-                    >
-                      <Icon size={16} className={isActive ? 'text-primary' : ''} />
-                      {t(`sidebar.metrics.${m.id}`)}
-                    </button>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Map Settings */}
-            <div>
-              <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-3 px-2">
-                {t('sidebar.mapSettings')}
-              </h3>
-              <div className="px-3 py-3 bg-secondary rounded-lg border border-border space-y-2.5">
-                {[
-                  [t('sidebar.boundaries'), 'Official'],
-                  [t('sidebar.projection'), 'Mercator'],
-                  [t('sidebar.dataSource'), 'GUS / Gov'],
-                ].map(([label, value]) => (
-                  <div key={label} className="flex items-center justify-between text-xs text-muted-foreground">
-                    <span>{label}</span>
-                    <span className="bg-card px-2 py-0.5 rounded text-foreground/80">{value}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+      <div className="flex flex-col md:flex-row min-h-[calc(100vh-4rem)] w-screen overflow-hidden">
+        {/* Sidebar - Desktop */}
+        <div className="hidden md:flex w-64 bg-sidebar border-r border-sidebar-border flex-col h-[calc(100vh-4rem)] z-20 shrink-0 p-4">
+          {SidebarContent}
         </div>
 
         {/* Main Content */}
-        <main className="flex-1 overflow-auto h-[calc(100vh-4rem)]">
+        <main className="flex-1 overflow-auto h-[calc(100vh-4rem)] relative">
           {loading ? (
             <div className="flex flex-col items-center justify-center h-full">
               <Loader2 className="animate-spin text-primary mb-4" size={48} />
@@ -309,6 +335,28 @@ const Index: React.FC = () => {
           ) : activeTab === 'map' ? (
             /* Full Map View */
             <div className="relative h-full bg-slate-50">
+              {/* Mobile Sidebar Trigger */}
+              <div className="absolute top-3 right-3 z-20 md:hidden">
+                <Sheet>
+                  <SheetTrigger asChild>
+                    <Button variant="secondary" size="icon" className="shadow-md">
+                      <Settings2 size={18} />
+                    </Button>
+                  </SheetTrigger>
+                  <SheetContent side="right">
+                    <SheetHeader className="text-left mb-6">
+                      <SheetTitle className="flex items-center gap-2">
+                        <Settings2 size={20} className="text-primary" />
+                        {t('sidebar.mapSettings')}
+                      </SheetTitle>
+                    </SheetHeader>
+                    <div className="mt-4">
+                      {SidebarContent}
+                    </div>
+                  </SheetContent>
+                </Sheet>
+              </div>
+
               <div className="absolute top-3 left-3 z-10">
                 <MapBreadcrumbs items={breadcrumbs} onNavigate={handleNavigate} />
               </div>
@@ -332,22 +380,44 @@ const Index: React.FC = () => {
             </div>
           ) : (
             /* Dashboard View */
-            <div className="p-6 space-y-6 min-h-full">
+            <div className="p-4 md:p-6 space-y-6 min-h-full">
               {/* Header + Filters */}
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div>
-                  <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
-                    <BarChart3 size={20} className="text-primary" />
-                    {t('header.title')}
-                  </h2>
-                  <p className="text-xs text-muted-foreground mt-0.5">
-                    {t('header.subtitle')}
-                  </p>
+              <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <h2 className="text-lg font-bold text-foreground flex items-center gap-2">
+                      <BarChart3 size={20} className="text-primary" />
+                      {t('header.title')}
+                    </h2>
+                    <p className="text-[10px] sm:text-xs text-muted-foreground mt-0.5">
+                      {t('header.subtitle')}
+                    </p>
+                  </div>
+                  
+                  {/* Mobile Sidebar Trigger for Dashboard */}
+                  <div className="md:hidden">
+                    <Sheet>
+                      <SheetTrigger asChild>
+                        <Button variant="outline" size="sm" className="gap-2">
+                          <Settings2 size={16} />
+                          {t('sidebar.view')}
+                        </Button>
+                      </SheetTrigger>
+                      <SheetContent side="right">
+                        <SheetHeader className="text-left mb-6">
+                          <SheetTitle>{t('sidebar.view')}</SheetTitle>
+                        </SheetHeader>
+                        <div className="mt-4">
+                          {SidebarContent}
+                        </div>
+                      </SheetContent>
+                    </Sheet>
+                  </div>
                 </div>
                 <GlobalFilters />
               </div>
 
-              <AnalyticsTabs overviewContent={OverviewContent} />
+              <AnalyticsTabs overviewContent={OverviewContent} isFullAccess={isFullAccess} />
             </div>
           )}
         </main>
