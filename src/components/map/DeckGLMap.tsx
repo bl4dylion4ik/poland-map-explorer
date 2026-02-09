@@ -249,10 +249,6 @@ export const DeckGLMap: React.FC<DeckGLMapProps> = ({
           minZoom={5.5}
           maxZoom={isFullAccess ? 18 : 7.5}
           style={{ opacity: basemapOpacity }}
-          scrollZoom={isFullAccess}
-          dragPan={isFullAccess}
-          dragRotate={isFullAccess}
-          doubleClickZoom={isFullAccess}
         >
           {/* 3D Buildings Layer */}
           <Layer

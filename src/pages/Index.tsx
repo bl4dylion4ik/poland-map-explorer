@@ -286,21 +286,22 @@ const Index: React.FC<IndexProps> = ({ devForceFull = false }) => {
           <div className="absolute top-3 left-3 z-10">
             <MapBreadcrumbs items={breadcrumbs} onNavigate={handleNavigate} />
           </div>
-          <DeckGLMap
-            geoData={activeGeoData}
-            baseGeo={allVoivodeships}
-            maskGeo={polandMask}
-            metric={metric}
-            cities={CITIES}
-            viewState={viewState}
-            onViewStateChange={handleViewStateChange}
-            onRegionClick={handleRegionClick}
-            onCityClick={handleCityClick}
-            currentLevel={mapLevel as MapViewLevel}
-            bounds={POLAND_BOUNDS}
-            selectedRegionFeature={selectedFeature}
-            isFullAccess={isFullAccess}
-          />
+              <DeckGLMap
+                geoData={activeGeoData}
+                baseGeo={allVoivodeships}
+                maskGeo={polandMask}
+                metric={metric}
+                cities={CITIES}
+                viewState={viewState}
+                onViewStateChange={handleViewStateChange}
+                onRegionClick={handleRegionClick}
+                onCityClick={handleCityClick}
+                currentLevel={mapLevel as MapViewLevel}
+                bounds={POLAND_BOUNDS}
+                selectedRegionFeature={selectedFeature}
+                isFullAccess={isFullAccess}
+              />
+
           <div className="absolute bottom-3 right-3 z-10">
             <MapLegend metric={metric} />
           </div>

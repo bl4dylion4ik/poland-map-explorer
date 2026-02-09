@@ -91,9 +91,9 @@ export const AnalyticsTabs: React.FC<AnalyticsTabsProps> = ({ overviewContent, i
         </TabsContent>
 
         {/* 3. PRICES & VOLATILITY TAB */}
-        <TabsContent value="prices" className="space-y-4 animate-fade-in-up">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative">
-            {!isFullAccess && <LockedOverlay />}
+        <TabsContent value="prices" className="space-y-4 animate-fade-in-up relative">
+          {!isFullAccess && <LockedOverlay title="Prices & Volatility Insights" />}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <PriceDivergenceChart />
             <VolatilityMatrix />
           </div>
@@ -119,9 +119,9 @@ export const AnalyticsTabs: React.FC<AnalyticsTabsProps> = ({ overviewContent, i
         </TabsContent>
 
         {/* 5. REGIONAL TAB */}
-        <TabsContent value="regional" className="space-y-4 animate-fade-in-up">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 relative">
-             {!isFullAccess && <LockedOverlay title="Regional Opportunity Matrix" />}
+        <TabsContent value="regional" className="space-y-4 animate-fade-in-up relative">
+          {!isFullAccess && <LockedOverlay title="Regional Market Trends" />}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
             <div className="lg:col-span-2">
               <RegionalOpportunityMatrix />
             </div>
@@ -129,8 +129,7 @@ export const AnalyticsTabs: React.FC<AnalyticsTabsProps> = ({ overviewContent, i
               <RegionalVolatilityTable />
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative">
-             {!isFullAccess && <LockedOverlay title="Regional Market Trends" />}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <RankingTable isFullAccess={isFullAccess} />
             <RankChangeTracker />
           </div>
