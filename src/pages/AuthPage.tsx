@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate, useLocation, Link } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -95,9 +95,11 @@ const AuthPage: React.FC = () => {
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
                       <Label htmlFor="password">Password</Label>
-                      <Button variant="link" className="px-0 font-normal h-auto text-xs" type="button">
-                        Forgot password?
-                      </Button>
+                      <Link to="/forgot-password">
+                        <Button variant="link" className="px-0 font-normal h-auto text-xs" type="button">
+                          Forgot password?
+                        </Button>
+                      </Link>
                     </div>
                     <Input 
                       id="password" 

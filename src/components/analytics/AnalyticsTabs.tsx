@@ -79,7 +79,8 @@ export const AnalyticsTabs: React.FC<AnalyticsTabsProps> = ({ overviewContent, i
         </TabsContent>
 
         {/* 2. SUPPLY & DEMAND TAB */}
-        <TabsContent value="supply" className="space-y-4 animate-fade-in-up">
+        <TabsContent value="supply" className="space-y-4 animate-fade-in-up relative">
+          {!isFullAccess && <LockedOverlay title="Supply & Demand Analytics" />}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             <AbsorptionChart days={timeRange} />
             <TimeOnMarketChart days={timeRange} />
@@ -128,8 +129,9 @@ export const AnalyticsTabs: React.FC<AnalyticsTabsProps> = ({ overviewContent, i
               <RegionalVolatilityTable />
             </div>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <RankingTable />
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 relative">
+             {!isFullAccess && <LockedOverlay title="Regional Market Trends" />}
+            <RankingTable isFullAccess={isFullAccess} />
             <RankChangeTracker />
           </div>
         </TabsContent>

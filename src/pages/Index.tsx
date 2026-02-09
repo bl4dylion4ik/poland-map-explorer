@@ -9,6 +9,7 @@ import { SupplyChart } from '@/components/analytics/SupplyChart';
 import { RankingTable } from '@/components/analytics/RankingTable';
 import { GlobalFilters } from '@/components/analytics/GlobalFilters';
 import { AnalyticsTabs } from '@/components/analytics/AnalyticsTabs';
+import { LockedOverlay } from '@/components/analytics/LockedOverlay';
 import { FilterProvider } from '@/contexts/FilterContext';
 import { fetchVoivodeships, fetchCounties, generatePolandMask } from '@/services/geoService';
 import { CITIES } from '@/data/mockData';
@@ -304,16 +305,26 @@ const Index: React.FC<IndexProps> = ({ devForceFull = false }) => {
             <MapLegend metric={metric} />
           </div>
         </div>
-        <div className="h-[500px] md:h-[850px] overflow-hidden">
-             <RankingTable />
+          <div className="h-[500px] md:h-[850px] overflow-hidden">
+             <RankingTable isFullAccess={isFullAccess} />
         </div>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
-        <PriceTrendChart />
-        <PriceDistributionChart />
-        <SupplyChart />
+        <div className="relative">
+          {!isFullAccess && <LockedOverlay />}
+          <PriceTrendChart />
+        </div>
+        <div className="relative">
+          {!isFullAccess && <LockedOverlay />}
+          <PriceDistributionChart />
+        </div>
+        <div className="relative">
+          {!isFullAccess && <LockedOverlay />}
+          <SupplyChart />
+        </div>
       </div>
     </>
+
   );
 
   return (
@@ -373,6 +384,7 @@ const Index: React.FC<IndexProps> = ({ devForceFull = false }) => {
                 currentLevel={mapLevel as MapViewLevel}
                 bounds={POLAND_BOUNDS}
                 selectedRegionFeature={selectedFeature}
+                isFullAccess={isFullAccess}
               />
               <div className="absolute bottom-3 right-3 z-10">
                 <MapLegend metric={metric} />

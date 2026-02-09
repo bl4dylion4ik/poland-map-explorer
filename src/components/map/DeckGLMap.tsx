@@ -81,14 +81,8 @@ export const DeckGLMap: React.FC<DeckGLMapProps> = ({
   }, [statsMap, metric]);
 
   const handleViewStateChangeInternal = (params: any) => {
-    if (!isFullAccess) {
-      // Restrict zoom and pan for free users
-      const nextViewState = params.viewState;
-      if (nextViewState.zoom > 7.5) {
-        return; // Block zooming in past voivodeship level
-      }
-    }
-    onViewStateChange(params);
+    if (!isFullAccess) return;
+    onViewStateChange(params.viewState);
   };
 
   const layers = [
@@ -126,7 +120,7 @@ export const DeckGLMap: React.FC<DeckGLMapProps> = ({
       pickable: true,
       stroked: true,
       filled: true,
-      lineWidthMinPixels: 1,
+      lineWidthMinPixels: currentLevel === 'city' ? 1.5 : 1,
       getLineColor: [100, 116, 139],
       getFillColor: (f: any) => {
         const id = f.properties.id || f.properties.kod || f.properties.nazwa;
@@ -259,7 +253,6 @@ export const DeckGLMap: React.FC<DeckGLMapProps> = ({
           dragPan={isFullAccess}
           dragRotate={isFullAccess}
           doubleClickZoom={isFullAccess}
-          touchZoomRotate={isFullAccess}
         >
           {/* 3D Buildings Layer */}
           <Layer

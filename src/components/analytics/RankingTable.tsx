@@ -5,10 +5,14 @@ import { useTranslation } from 'react-i18next';
 
 type SortMetric = 'price' | 'supply' | 'growth';
 
-export const RankingTable: React.FC = () => {
+interface RankingTableProps {
+  isFullAccess?: boolean;
+}
+
+export const RankingTable: React.FC<RankingTableProps> = ({ isFullAccess = true }) => {
   const { t } = useTranslation('analytics');
   const [sortBy, setSortBy] = useState<SortMetric>('price');
-  const data = getTopCities(sortBy, 10);
+  const data = getTopCities(sortBy, isFullAccess ? 10 : 3);
 
   return (
     <div className="bg-card border border-border rounded-xl p-5">
